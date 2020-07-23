@@ -1,0 +1,72 @@
+
+
+
+<div class="container">
+	
+	<!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+
+	<div ng-if="!IS_LOADING">
+
+		<div style="margin:10px;">
+			
+			<table width="100%">
+				<tr>
+					<td>
+						<input type="text" ng-model="accessKey" name="" placeholder="access control name..">
+						&nbsp;&nbsp;
+						<button ng-click="checkUncheckAll()" class="btn btn-default btn-xs">Check/Uncheck All</button>
+						&nbsp;&nbsp;
+						<button ng-click="reloadData()" class="btn btn-default btn-xs">Reload</button>
+					</td>
+					<td align="right">
+						<button ng-click="grantAccess()" class="btn btn-success btn-md">Grand Access</button>
+						<span class="loc_sticker"><b>{{PAGE_NAME}}</b></span>
+					</td>
+
+				</tr>
+			</table>
+			<br>
+		</div>
+		
+		<table class="table">
+			<thead>
+				<tr class="custom_dt_header">
+					<td>
+						Action
+					</td>
+					<td>
+						Access
+					</td>
+					<td>
+						Code
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="data in ACCESS_CONTROLS_LIST | filter : accessKey">
+					<td>
+						<input ng-model="data.isChecked" type="checkbox" name="">
+					</td>
+					<td>
+						<b>{{data.name}}</b>
+					</td>
+					<td>
+						{{data.code}}
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

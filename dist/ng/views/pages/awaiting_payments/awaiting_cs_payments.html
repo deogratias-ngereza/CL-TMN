@@ -1,0 +1,888 @@
+
+<br>
+<!-- listings -->
+<div>
+
+    <!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+    <!-- add new -->
+    <div ng-if="!IS_LOADING" class="row" style="margin-top: 10px;">
+        <div class="col-xs-8" align="left">
+            <!-- <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add awaiting_payment_list</button>
+            <button class="btn btn-default btn-sm" ng-click='reloadData()'>Reload</button>
+            <button class="btn btn-default btn-sm" ng-click='generateXLSData()'>Excel</button>-->
+            <table cellpadding="100px" cellspacing="100px">
+                <tr>
+                   
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='reloadData()'> 
+                        <img class="img img-responsive" src="./dist/img/Repeat.png"></a>
+                    </td>
+                    <td>
+                    	&nbsp;&nbsp;&nbsp;
+						<a ui-sref="shipments.new_payment_awaiting_list" class="btn btn-default btn-xs">Generate New List
+							&nbsp;
+							<span class="glyphicon glyphicon-plus"></span>
+						</a>
+                    </td>
+                    <td>&nbsp;
+                        <a target="_blank" class="btn btn-default btn-xs" onclick="selectElementContents( document.getElementById('dtTable') );">
+                        	<span class="glyphicon glyphicon-file" style="color:green;"></span>&nbsp;
+                        Copy to Excel</a>
+                    </td>
+                    <td>
+                        &nbsp;S:&nbsp;
+                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.start_date"/>
+                    </td>
+                    <td>
+                        &nbsp;E:&nbsp;
+                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.end_date"/>
+                    </td>
+                    <td>
+                    	<button class="btn btn-default btn-xs" ng-click="filterShipments()">FILTER</button>
+                    </td>
+                    <!--
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='btnSearch()'> 
+                        <button class="btn btn-xs btn-primary">Search awaiting_payment_list</button></a>
+                    </td>-->
+                    <!--<td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("download")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Acrobat.png"></a></td>
+                    <td style="padding:0 5px 0 5px;" ><a ng-click='generateXLSData()'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Excel.png"></a></td>
+                    <td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("print")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/Printer.png"></a></td>-->
+                </tr>
+            </table>
+        </div>
+        <div class="col-xs-4" align="right">
+            <div>
+                <span class="loc_sticker">
+                	<span class="badge">{{AWAITING_PAYMENT_LISTS_LIST.length}}</span>&nbsp;
+                	<b>A.P.LIST</b></span>
+                <span class="loc_sticker_pg"><b>PAGE</b></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- listing table -->
+    <div ng-if="!IS_LOADING" class="row" style="width:100%;margin-left:20px;overflow-y: scroll; height:100%;" >
+        
+        <table id="dtTable" datatable="" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table-responsive row-border hover" border="0">
+            <thead>
+                <tr class="custom_dt_header">
+                    <th>OPTIONS</th>
+                    
+                    <th>ID</th>
+                    
+                    <th>AWB</th>
+
+                    <th>CREATED_DATE</th>
+                    
+                    <th>PAYMENT_RECEIVED</th>
+                    
+                    <th>STATUS</th>
+                    
+                    <th>BATCH_NO</th>
+                    
+                    <th>AMOUNT</th>
+                    
+                    <th>REF_NO</th>
+                    
+                    <th>RECEIPT_NO</th>
+                    
+                    <th>DESCRIPTION</th>
+                    
+                    <th>REMARKS</th>
+                    
+                    <th>TRANSACTION_DATE</th>
+                    
+                    
+                    
+                    <th>CONFIRMED_DATE</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="data in AWAITING_PAYMENT_LISTS_LIST">
+                    <td style="min-width: 80px;">
+                        <a ng-click="btnEdit(data)" class="pencil"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-if="0" ng-click="btnDelete(data)" class="trash"><span class="glyphicon glyphicon-trash"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-click="btnView(data)" class="eye"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    </td>
+                    
+                        
+                        
+                            
+                        <td class="g-tpl-id">{{ data.id }}</td>
+                        	<td class="code1">{{ data.shipment.awb_no }}</td>
+
+                          <td>{{ data.created_date }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                        <td><img class="img" src="./dist/img/{{ data.payment_received == true || data.payment_received == true == 1 ? 'success.png' : 'fail.png' }} "></td>
+                        
+
+                    
+                        
+                        
+                            
+                        <td style="{{getStatusStyle(data.status)}}">{{ data.status }}</td>
+                        
+                            
+                        <td>{{ data.batch_no }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.amount }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.ref_no }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.receipt_no }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.description }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.remarks }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.transaction_date }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                      
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.confirmed_date }}</td>
+                            
+                        
+
+                    
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- add new modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+            <!-- loading indicator-->
+            <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                <center>
+                    <div class="loader"> <i class="reloadMsg"></i> </div>
+                    <br>
+                    <i>{{ LOADING_MSG }}</i>
+                </center>
+            </div>
+
+            <div ng-if="!IS_LOADING" class="row main">
+                <div class="col-md-12" style="padding:30px;">
+                    <h3 class="g-tpl-title">Add awaiting_payment_list</h3><br>
+                    <form class="" method="post" action="#">
+
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                            
+                            <!--relation fields-->
+                            
+                            <!--/relation fields-->
+
+
+                            
+                    		<tr>
+                                <td width="30%">id</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.id" type="number" class="form-control input-normal" placeholder="Enter id" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">shipment_id</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.shipment_id" type="number" class="form-control input-normal" placeholder="Enter shipment_id" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">batch_no</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.batch_no" type="text" class="form-control input-normal" placeholder="Enter batch_no" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">amount</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.amount" type="number" class="form-control input-normal" placeholder="Enter amount" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">ref_no</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.ref_no" type="text" class="form-control input-normal" placeholder="Enter ref_no" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">receipt_no</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.receipt_no" type="text" class="form-control input-normal" placeholder="Enter receipt_no" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">description</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <textarea ng-model="NEW_OBJ.description" rows="3" class="form-control input-normal" placeholder="Enter description" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">remarks</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <textarea ng-model="NEW_OBJ.remarks" rows="3" class="form-control input-normal" placeholder="Enter remarks" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">transaction_date</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="NEW_OBJ.transaction_date" ng-init="NEW_OBJ.transaction_date = TODAYS_DATE"/>
+                                    <span style="color:gray;">(yyyy-mm-dd)</span>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">created_date</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="NEW_OBJ.created_date" ng-init="NEW_OBJ.created_date = TODAYS_DATE"/>
+                                    <span style="color:gray;">(yyyy-mm-dd)</span>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">payment_received</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.payment_received" type="text" class="form-control input-normal" placeholder="Enter payment_received" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">status</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <select ng-model="NEW_OBJ.status" ng-options='opt as opt for opt in ["PENDING","PAID","AWAITING","ISSUES"]' ng-init="NEW_OBJ.status = 'PENDING'" class="form-control input-normal" placeholder="Enter status" style="width:250px;"/>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">confirmed_date</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="NEW_OBJ.confirmed_date" ng-init="NEW_OBJ.confirmed_date = TODAYS_DATE"/>
+                                    <span style="color:gray;">(yyyy-mm-dd)</span>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                        </table>
+
+                    </form>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="addNew()">Add</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /add new modal -->
+
+
+
+
+
+    <!-- update modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                 <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+                    <center>
+                        <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+                        <div class="loader"></div>
+                        <br>
+                        <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+                        <br><br><br>
+                        <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Update awaiting_payment_list</h3><br>
+                        <form class="" method="post" action="#">
+
+
+                            <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                               
+	                        		<tr ng-if="0">
+		                                <td width="30%">shipment_id</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.shipment_id" type="number" class="form-control input-normal" placeholder="Enter shipment_id" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr ng-if="0">
+		                                <td width="30%">batch_no</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.batch_no" type="text" class="form-control input-normal" placeholder="Enter batch_no" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">amount</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.amount" type="number" class="form-control input-normal" placeholder="Enter amount" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">ref_no</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.ref_no" type="text" class="form-control input-normal" placeholder="Enter ref_no" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">receipt_no</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.receipt_no" type="text" class="form-control input-normal" placeholder="Enter receipt_no" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">description</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <textarea ng-model="EDITABLE_OBJ.description" rows="3" class="form-control input-normal" placeholder="Enter description" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">remarks</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <textarea ng-model="EDITABLE_OBJ.remarks" rows="3" class="form-control input-normal" placeholder="Enter remarks" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">transaction_date</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="EDITABLE_OBJ.transaction_date"/>
+                                            <span style="color:gray;">(yyyy-mm-dd)</span>
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">created_date</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="EDITABLE_OBJ.created_date"/>
+                                            <span style="color:gray;">(yyyy-mm-dd)</span>
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">payment_received</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.payment_received" type="text" class="form-control input-normal" placeholder="Enter payment_received" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">status</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <select ng-model="EDITABLE_OBJ.status" ng-options='opt as opt for opt in ["PENDING","PAID","AWAITING","ISSUES"]' ng-init="EDITABLE_OBJ.status = 'status'" class="form-control input-normal" placeholder="Enter status" style="width:250px;"/>
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr ng-if="0">
+		                                <td width="30%">confirmed_date</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="EDITABLE_OBJ.confirmed_date"/>
+                                            <span style="color:gray;">(yyyy-mm-dd)</span>
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="update()">Update</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /update modal -->
+
+    <!-- view modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <div ng-if="1" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">awaiting_payment_list</h3><br>
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                        	
+
+                        		<tr>
+	                                <td width="30%">id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">shipment_id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.shipment_id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">batch_no</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.batch_no }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">amount</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.amount }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">ref_no</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.ref_no }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">receipt_no</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.receipt_no }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">description</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.description }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">remarks</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.remarks }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">transaction_date</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.transaction_date }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">created_date</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.created_date }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">payment_received</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><img class="img" src="./dist/img/{{ PICKED_OBJ.payment_received == true || PICKED_OBJ.payment_received == true == 1 ? 'success.png' : 'fail.png' }} "></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">status</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.status }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">confirmed_date</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.confirmed_date }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+                        </table>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success g-tpl-success" data-dismiss="modal" ng-click="closeModal()">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /view modal -->
+
+    <!-- delete modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Delete a awaiting_payment_list</h3><br>
+                        Are you sure you want to delete a awaiting_payment_list?
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-danger g-tpl-danger" ng-click="delete()">Delete</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /delete modal -->
+
+
+      <!-- search modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i></i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Enter awaiting_payment_list</h3><br>
+                        <input type="text" ng-model="SEARCH_OBJ.search_key" class="form-control input-normal" placeholder="Enter awaiting_payment_list Here" name="">
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-warning g-tpl-warning" ng-click="deep_search_awaiting_payment_list()">Search Now</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /search modal -->
+
+
+
+
+</div>
+<!-- /listings -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

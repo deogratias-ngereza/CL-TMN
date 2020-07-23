@@ -1,0 +1,151 @@
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav">
+        <li class="active">
+            <a ui-sref="app"><i class="fa fa-fw fa-dashboard"></i> Dashboard <span style="color:#118E90;padding: 10px;">{{ CURRENT_USER.unit_info.name }}</span></a>
+        </li>
+
+
+
+
+         
+            <li>
+                <a ui-sref="app.clients"><i class="fa fa-fw fa-table"></i> NFBRKS</a>
+            </li>
+
+         
+            <li ng-if="CURRENT_USER.is_developer == 1">
+                <a ui-sref="app.departments"><i class="fa fa-fw fa-table"></i> BROKERS</a>
+            </li>
+
+         
+            <li>
+                <a ui-sref="app.branches"><i class="fa fa-fw fa-table"></i> PAYMENTS</a>
+            </li>
+
+         
+            <li ng-if="CURRENT_USER.is_developer == 1">
+                <a ui-sref="app.access_controls"><i class="fa fa-fw fa-table"></i> ACCESS-CONTROLS</a>
+            </li>
+
+         
+            <li>
+                <a ui-sref="app.units"><i class="fa fa-fw fa-table"></i> UNITS</a>
+            </li>
+
+         
+            <li>
+                <a ui-sref="app.users"><i class="fa fa-fw fa-table"></i> USERS</a>
+            </li>
+
+         
+            <li>
+                <a ui-sref="app.company_info"><i class="fa fa-fw fa-table"></i> COMPANY-INFO</a>
+            </li>
+
+            <li>
+                <a ui-sref="app.flight_carriers"><i class="fa fa-fw fa-table"></i> FLIGHT-CARRIER</a>
+            </li>
+
+        
+
+
+
+
+        <li ng-if="0">
+            <a ui-sref="app.profile"><i class="fa fa-fw fa-table"></i> Profile</a>
+        </li>
+
+        <li ng-if="0">
+            <a ui-sref="app.licence"><i class="fa fa-arrow-circle-up"></i> Licence</a>
+        </li>
+
+
+        <li>
+            <a ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Logout</a>
+        </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--
+        <li>
+            <a ui-sref="app.requests"><i class="fa fa-fw fa-table"></i> Requests</a>
+        </li>
+
+        <li>
+            <a ui-sref="app.requests"><i class="fa fa-fw fa-table"></i> OnHoldLoans</a>
+        </li>
+
+
+        <li>
+            <a ui-sref="app.requests"><i class="fa fa-fw fa-table"></i> OnProcessing</a>
+        </li>
+
+        <li>
+            <a ui-sref="app.requests"><i class="fa fa-fw fa-table"></i> Served Clients</a>
+        </li>
+
+        <li>
+            <a ui-sref="app.purposes"><i class="fa fa-fw fa-table"></i> List of purposes</a>
+        </li>
+        <li>
+            <a ui-sref="app.new_purpose"><i class="fa fa-fw fa-table"></i> New purpose</a>
+        </li>-->
+
+
+
+        
+
+        <!--
+        <li>
+            <a ui-sref="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+        </li>
+        <li>
+            <a ui-sref="tables.html"><i class="fa fa-fw fa-table"></i> Tables</a>
+        </li>
+        <li>
+            <a ui-sref="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+        </li>
+        <li>
+            <a ui-sref="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+        </li>
+        <li>
+            <a ui-sref="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
+        </li>
+        <li>
+            <a ui-sref="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="demo" class="collapse">
+                <li>
+                    <a ui-sref="#">Dropdown Item</a>
+                </li>
+                <li>
+                    <a ui-sref="#">Dropdown Item</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a ui-sref="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
+        </li>
+        <li>
+            <a ui-sref="index-rtl.html"><i class="fa fa-fw fa-dashboard"></i> RTL Dashboard</a>
+        </li>
+        -->
+
+    </ul>
+</div>

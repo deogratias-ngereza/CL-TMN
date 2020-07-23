@@ -1,0 +1,405 @@
+
+<div class="">
+
+	<div width="row">
+		<!--search view -->
+		<div class="col col-md-3" ng-if="SHOW_SIDEVIEW">
+			<div class="" style="margin:10px;padding:5px;">
+				
+				<table class="table">
+					<tr>
+						<td>
+							Vendor:&nbsp;&nbsp;
+						</td>
+						<td>
+							<select ng-options="opt.id as opt.name for opt in VENDORS_LIST" ng-model="SEARCH_OBJ.vendor_id"></select>
+			                    &nbsp;&nbsp;&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td>
+							&nbsp;CAT:&nbsp;
+						</td>
+						<td>
+		                    <select ng-options="opt as opt for opt in ['CREATED-DATE','INBOUNDS','PRE-ALERTS','PRE-CLEARANCES','ARRIVALS','AT-CUSTOMS','RELEASED','SHIPMENT-AWB']" ng-model="SEARCH_OBJ.category"></select>
+		                    &nbsp&nbsp&nbsp
+		                </td>
+					</tr>
+					<tr ng-if="SEARCH_OBJ.category != 'PRE-CLEARANCES'">
+						<td>
+							&nbsp;ARRIVED STATUS:&nbsp;
+						</td>
+						<td>
+		                    <select ng-options="opt as opt for opt in ['ARRIVED','NOT_ARRIVED','ALL']" ng-model="SEARCH_OBJ.arrived_status"></select>
+		                    &nbsp&nbsp&nbsp
+		                </td>
+					</tr>
+					<tr ng-if="SEARCH_OBJ.category != 'INBOUNDS'">
+						<td>
+							&nbsp;EMAIL STATUS:&nbsp;
+						</td>
+						<td>
+		                    <select ng-options="opt as opt for opt in ['SCHEDULED','SENT','NOT_SENT','ERROR','ALL']" ng-model="SEARCH_OBJ.email_status"></select>
+		                    &nbsp&nbsp&nbsp
+		                </td>
+					</tr>
+					<tr>
+						<td>
+							&nbsp;AWB-CUST:&nbsp;
+						</td>
+						<td>
+		                    <select ng-options="opt as opt for opt in ['AWB_CUST_DEFINED','AWB_CUST_NOT_DEFINED','ALL']" ng-model="SEARCH_OBJ.awb_cust_defined"></select>
+		                    &nbsp&nbsp&nbsp
+		                </td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+		<!--/search view -->
+
+
+
+		<!--detection view -->
+		<div class="col {{SHOW_SIDEVIEW ? 'col-md-9' : 'col-md-12'}}">
+			<!-- listings -->
+			<div style="margin:0px;">
+
+			   
+			    <!-- add new -->
+			    <div class="row" style="margin-top:30px;">
+			        <div class="col-xs-11" align="left">
+			            <!-- <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add branch</button>
+			            <button class="btn btn-default btn-sm" ng-click='reloadData()'>Reload</button>
+			            <button class="btn btn-default btn-sm" ng-click='generateXLSData()'>Excel</button>-->
+			            <table cellpadding="100px" cellspacing="100px">
+			                <tr>
+			                    <td>
+			                    	<span ng-if="SHOW_SIDEVIEW" ng-click="toggleSideView()" class="glyphicon glyphicon-resize-full"></span>
+			                    	<span ng-if="!SHOW_SIDEVIEW" ng-click="toggleSideView()" class="glyphicon glyphicon-resize-small"></span>
+			                    	&nbsp;&nbsp;
+			                    </td>
+			                    <td style="padding:0 5px 0 5px;"> <a ng-click='reloadData()'> 
+			                        <img class="img img-responsive" src="./dist/img/Repeat.png"></a>
+			                    </td>
+			                    <td ng-if="0" style="padding:0 5px 0 5px;"> <a ng-click='btnSearch()'> 
+			                        <button class="btn btn-xs btn-primary">Search branch</button></a>
+			                    </td>
+			                    <td>
+			                        <input type="text" ng-model="SEARCH_OBJ.search_key" name="">
+			                    </td>
+			                    <td>
+			                        &nbsp;S:&nbsp;
+			                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.start_date"/>
+			                    </td>
+			                    <td>
+			                        &nbsp;E:&nbsp;
+			                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.end_date"/>
+			                    </td>
+
+			                    <td>&nbsp;
+			                        <a class="btn btn-default btn-xs" ng-click="filter_shipments()">Filter Shipments</a>
+			                    </td>
+			                    <td>&nbsp;
+			                        <a target="_blank" class="btn btn-success btn-xs" ng-click="download_filtered_shipments()">Download</a>
+			                    </td>
+
+			                    
+			                </tr>
+			            </table>
+			            <br>
+			        </div>
+			        <div class="col-xs-1" align="right">
+			            <div>
+			                <span class="loc_sticker"><span class="badge">{{SHIPMENTS.length}}</span>&nbsp;</span>
+			                <!--<span class="loc_sticker_pg"><b>PAGE</b></span>-->
+			            </div>
+			        </div>
+			    </div>
+			    <div>
+			    	<table>
+			    		<tr>
+			    			
+			                <td>&nbsp;Value:&nbsp;
+			                    <select ng-options="opt as opt for opt in ['HV','LV','ND','ALL']" ng-model="SEARCH_OBJ.lh_value"></select>
+			                    &nbsp&nbsp&nbsp
+			                </td>
+
+			                <td>&nbsp;Bill:&nbsp;
+			                    <select ng-options="opt as opt for opt in ['S','C','N','A']" ng-model="SEARCH_OBJ.bill_to"></select>
+			                    &nbsp&nbsp&nbsp
+			                </td>
+
+			                
+			                
+
+
+			                
+			    		</tr>
+			    	</table>
+			    </div>
+
+
+
+			    <!-- loading indicator-->
+			    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+			        <center>
+			            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+			            <div class="loader"></div>
+			            <br>
+			            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+			            <br><br><br>
+			            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+			        </center>
+			    </div>
+
+
+			    <!-- listing table -->
+			    <div ng-if="!IS_LOADING" class="table-responsive">
+			        <table id="dtTable" class="table table-stripped">
+			            <thead class="custom_dt_header">
+			                <tr> 
+			                	<td><span><i>i</i></span></td>
+			                    <td>AWB</td>
+			                    <td>CONS.CMPNY</td>
+			                    <td>CONS.NAME</td>
+			                    <td>CONS.ACC</td>
+
+			                    <td>CUSTOMER</td>
+			                    <td>SYS.DET.CUSTOMER</td>
+			                   	<td>CUR.DET</td>
+
+			                    <td>TYPE</td>
+			                    <td>HV/LV</td>
+			                    <td>CURR</td>
+			                    <td>CUSTOMS</td>
+			                    <td>CUSTOMS(USD)</td>
+
+			                    
+			                   
+			                    <td>WEIGHT</td>
+			                    <td>DESC</td>
+			                    
+
+
+			                    <td>DEST</td>
+			                    
+			                    <td>CONS.PHONE</td>
+			                    
+			                    <td>CONS.ADDR1</td>
+			                    <td>CONS.ADDR2</td>
+			                    <td>CONS.CITY</td>
+			                    <td>CONS.STATE</td>
+			                    <td>CONS.CNTY</td>
+			                    <td>CONS.POSTAL</td>
+			                    
+			                </tr>
+			            </thead>
+			            <tbody style="color: gray;font-size: 0.9em;">
+			                <tr ng-repeat="data in SHIPMENTS | filter : SEARCH_OBJ.search_key" ng-init="data.current_detected_customer = undefined;data.selected_for_detection = 0;data.current_detected_customers = []"
+			                style="background-color: {{data.selected_for_detection == 1 ? '#fcd02d':'';}};">
+			                	<td><b>{{$index + 1}}</b></td>
+			                    <td class="">
+			                    	<div style="width: 135px;">
+			                    		<!--dutables-->
+					                    <span ng-if="data.dutable" style="background-color: blue;color:white;width: 30px;height: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+					                    <span ng-if="!data.dutable" style="background-color: orange;color:white;width: 30px;height: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+			                    		<b>{{ data.awb_no }} ({{ data.bill_duty_to }})</b>
+			                    	</div>
+			                    </td>
+
+			                    <td class="">
+			                    	<span ng-if="data.customer_id == -1" ng-click="openAddCustomerModal($index,data)" style="color:white;background-color: green;padding:2px;"><span  class="glyphicon glyphicon-plus"></span></span>
+
+			                    	&nbsp;{{ data.consignee_company }}
+			                    </td>
+			                    <td class="">{{ data.consignee_name }}</td>
+			                    <td class="">{{ data.consignee_account }}</td>
+
+			                    <td>
+			                    	<div style="width: 150px;">
+			                    	<div ng-if="data.customer==null" style="background-color: red;color:white;padding:5px;">
+			                    		NIL
+			                    	</div>
+
+			                    	<div ng-if="data.customer.is_company == 1">
+			                    		<b>{{data.customer.company_name}}</b><br>
+			                    		<span ng-if="data.customer.tin.length < 5 || data.customer.tin == null" style="border: 1px solid red; padding:3px;border-radius: 2px;">
+			                    			<span style="color: red;">NO-TIN/PIN</span>
+			                    		</span>{{data.customer.tin}}<br><br>
+			                    		<span ng-if="data.customer.email_1.length < 5 || data.customer.email_1 == '' || data.customer.email_1 == null" style="border: 1px solid red; padding:3px;border-radius: 2px;">
+			                    			<span style="color: red;">NO-EMAIL</span>
+			                    		</span>{{data.customer.email_1}}<br><br>
+			                    		<span ng-if="data.customer.mobile_no1.length < 5 || data.customer.mobile_no1 == '' || data.customer.mobile_no1 == null" style="border: 1px solid red; padding:3px;border-radius: 2px;">
+			                    			<span style="color: red;">NO-PHONE</span>
+			                    		</span>
+			                    		{{data.customer.mobile_no1}}
+			                    	</div>
+
+			                    	<div ng-if="data.customer.is_company == 0">
+			                    		<b>{{data.customer.first_name}}</b>
+			                    	</div></div>
+			                    </td>
+			                    <td>
+			                    	<div ng-if="data.detected_customer.is_company == 1">
+			                    		{{data.customer.company_name}}
+			                    	</div>
+			                    	<div ng-if="data.detected_customer.is_company == 0">
+			                    		{{data.customer.first_name}}
+			                    	</div>
+			                    	<div ng-if="data.detected_customer">--</div>
+			                    </td>
+
+
+			                    <!--user can edit-->
+			                   	<td>
+			                   		<div ng-if="data.current_detected_customer.is_company == 1">
+			                    		{{data.customer.company_name}}
+			                    	</div>
+			                    	<div ng-if="data.current_detected_customer.is_company == 0">
+			                    		{{data.customer.first_name}}
+			                    	</div>
+
+			                    	<div> 
+			                    		<span ng-click="detectSingleEntry($index,data)" class="glyphicon glyphicon-link"></span>&nbsp;
+			                    		<span ng-repeat="customer in data.current_detected_customers" ng-init="customer.more=0" >	
+			                    			<span class="badge">{{customer.account_no }} : {{customer.company_name}}
+			                    				&nbsp;
+			                    				<span ng-click="customer.more = (customer.more ==1)?0:1" class="glyphicon glyphicon-pencil"></span>
+			                    			</span>
+			                    			<div ng-if="customer.more ==1">
+			                    				<br>
+			                    				
+			                    				<button ng-click="attachThisCustomerToThisAWB($parent.$parent.$index,$index,customer)"><span class="glyphicon glyphicon-user"></span> &nbsp;Attach Customer to AWB</button>
+			                    			</div>
+
+			                    		</span>
+			                    	</div>
+			                   	</td>
+
+			                   
+
+			                   
+			                    <!--fedex/tnt-->
+			                    <td ng-if="data.client_id == 3" style="font-size:0.8em;background-color: #b982d1;color:white;">FEDEX</td>
+			                    <td ng-if="data.client_id == 2" style="font-size:0.8em;background-color: #ccad87;color:white;">TNT</td>
+			                    <td ng-if="data.client_id == -1" style="font-size:0.8em;background-color: #de3a6b;color:white;">--</td>
+
+			                    
+
+			                    
+			                    <!--High / low-->
+			                    <td>
+			                        <div ng-if="data.lh_type == 'LV'" style="background-color: orange;color:white;">
+			                            LV
+			                        </div>
+			                        <div ng-if="data.lh_type == 'HV'" style="background-color: red;color:white;">
+			                            HV
+			                        </div>
+			                        <div ng-if="data.lh_type == 'ND'" style="background-color: gray;color:white;">
+			                            ND
+			                        </div>
+			                    </td>
+
+			                    <td class="">{{ data.currency }}</td>
+			                    <td class=""><b>{{ data.customs_value }}</b></td>
+			                    <td class="">
+			                        <div ng-if="data.customs_value_in_usd == -1" style="background-color: red;color:white;padding:10px;">
+			                            Error
+			                        </div>
+			                        <div ng-if="data.customs_value_in_usd != -1">
+			                            <b>$ {{ data.customs_value_in_usd }}</b>
+			                        </div>
+			                    </td>
+
+
+			                   
+			                    
+			                    <td class="">{{ data.weight }} {{ data.uom }}</td>
+			                    <td>{{ data.shipment_description }}</td>
+			                    
+
+
+			                    
+			                    <td>{{ data.dest_gateway }}</td>
+			                    
+			                    
+			                    <td class="">{{ data.consignee_phone }}</td>
+			                   
+			                    <td class="">{{ data.consignee_addr1 }}</td>
+			                    <td>{{ data.consignee_addr2 }}</td>
+			                    <td>{{ data.consignee_city }}</td>
+			                    <td>{{ data.consignee_state }}</td>
+			                    <td>{{ data.consignee_country_code }}</td>
+			                    <td>{{ data.consignee_postal }}</td>
+			                    
+			                </tr>
+			            </tbody>
+			        </table>
+			    </div>
+
+
+
+			</div>
+			<!-- /listings -->
+
+		</div>
+		<!--/detection view -->
+
+	</div>
+	
+
+</div>
+
+
+
+
+
+
+<!---MODALS--->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

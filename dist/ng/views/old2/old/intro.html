@@ -1,0 +1,184 @@
+<style type="text/css">
+  @media (min-width: 576px)
+  .slim-pagetitle {
+      margin-top: 0;
+      margin-bottom: 0;
+  }
+  .slim-pagetitle {
+      margin-top: 15px;
+      margin-bottom: 10px;
+      color: #343a40;
+      padding-left: 10px;
+      border-left: 4px solid #4662D4;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 18px;
+      letter-spacing: .5px;
+  }
+  .row-xs {
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+  .row-xs > div {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .card-status {
+    padding: 20px;
+  }
+  .card-status .media {
+    align-items: center;
+  }
+  .card-status .icon, .card-status .icon::before, .card-status .icon::after {
+    line-height: 1;
+  }
+  .card-status .icon {
+      font-size: 64px;
+  }
+  .card-status .media-body {
+    margin-left: 15px;
+  } 
+  .card-status h1 {
+    margin-bottom: 0;
+    color: #343a40;
+    font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+  }
+</style>
+
+ <!-- loading indicator-->
+    <div ng-if="0" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{LOADING_MSG}}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+<div ng-if="1" class="container" style="margin-top: 20px;">
+
+
+
+
+    <div class="row">
+       <h6 class="slim-pagetitle">Welcome <span style="color:#3dbbe5;"> {{CURRENT_USER.first_name }} {{CURRENT_USER.last_name }}</span></h6>
+    </div>
+
+    <div class="row row-xs">
+          <div class="col-sm-6 col-lg-3">
+            <div class="card card-status">
+              <div class="media">
+                
+                <div class="media-body">
+                  <h1 class="ng-binding"><i class="glyphicon glyphicon-arrow-down" style="color:blue;"></i> {{ DASHBOARD_BUNDLE.total_inbound_manifest }}</h1>
+                  <p>Total In-Bounds</p>
+                </div><!-- media-body -->
+              </div><!-- media -->
+            </div><!-- card -->
+          </div><!-- col-3 -->
+          <div class="col-sm-6 col-lg-3 mg-t-10 mg-sm-t-0">
+            <div class="card card-status">
+              <div class="media">
+                <i class="icon ion-ios-cloud-upload-outline tx-primary "></i>
+                <div class="media-body">
+                  <h1 class="ng-binding"><i class="glyphicon glyphicon-arrow-up" style="color:orange;"></i>{{ DASHBOARD_BUNDLE.total_outbound_manifest }}</h1>
+                  <p>Total Out-Bounds</p>
+                </div><!-- media-body -->
+              </div><!-- media -->
+            </div><!-- card -->
+          </div><!-- col-3 -->
+          <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+            <div class="card card-status">
+              <div class="media">
+                <i class="icon ion-ios-bookmarks-outline tx-teal"></i>
+                <div class="media-body">
+                  <h1 class="ng-binding"><i class="glyphicon glyphicon-check" style="color:green;"></i>{{ DASHBOARD_BUNDLE.total_deliveries }}</h1>
+                  <p>Total Deliveries</p>
+                </div><!-- media-body -->
+              </div><!-- media -->
+            </div><!-- card -->
+          </div><!-- col-3 -->
+          <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+            <div class="card card-status">
+              <div class="media">
+                <i class="icon ion-ios-analytics-outline tx-pink"></i>
+                <div class="media-body">
+                  <h1 class="ng-binding"><i class="glyphicon glyphicon-user" style="color:purple;"></i>{{ DASHBOARD_BUNDLE.total_customers }}</h1>
+                  <p>Total Customers</p>
+                </div><!-- media-body -->
+              </div><!-- media -->
+            </div><!-- card -->
+          </div><!-- col-3 -->
+        </div>
+
+
+
+    <div class="row">
+      <div class="col-sm-6">
+          <div class="panel panel-default">
+            <div class="panel-heading"><b>Pending Cash Requests</b></div>
+            <div class="panel-body">
+                <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <td>AMT</td>
+                      <td>TO</td>
+                      <td>PURPOSE</td>
+                      <td>ACTION</td>
+                    </tr>
+                  </thead>
+                  
+
+                  <tr ng-repeat="data in DASHBOARD_BUNDLE.not_given_cash_request">
+                    <td>{{data.amt}}</td>
+                    <td>{{data.worker.first_name}}</td>
+                    <td>{{data.purpose}}</td>
+                    <td><a ui-sref="app.cash_requests({ worker_name:data.worker.first_name ,worker_id: data.for_worker_id })"><span class="badge badge-default">View</span></a></td>
+                  </tr>
+                </table>
+            </div>
+          </div>
+      </div>
+      <div class="col-sm-6">
+          <div class="panel panel-default">
+            <div class="panel-heading"><b>Pending for approval Cash Requests</b></div>
+            <div class="panel-body">
+                <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <td>AMT</td>
+                      <td>TO</td>
+                      <td>PURPOSE</td>
+                      <td>ACTION</td>
+                    </tr>
+                  </thead>
+                  
+
+                  <tr ng-repeat="data in DASHBOARD_BUNDLE.not_approved_cash_request">
+                    <td>{{data.amt}}</td>
+                    <td>{{data.worker.first_name}}</td>
+                    <td>{{data.purpose}}</td>
+                    <td><a ui-sref="app.cash_requests({ worker_name:data.worker.first_name ,worker_id: data.for_worker_id })"><span class="badge badge-default">View</span></a></td>
+                  </tr>
+                </table>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+     <div class="row">
+      <center style="margin-top: 30px;color:gray;">
+        <h1>UI generated by default - GTech Builder</h1>
+
+        <h3>Change it base on your needs</h3>
+
+        <span style="font-size: 0.8em;">@Grand Technologies LTD</span>
+      </center>
+    </div>
+
+</div>

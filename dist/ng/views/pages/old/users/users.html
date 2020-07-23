@@ -1,0 +1,881 @@
+<!-- listings -->
+<div>
+
+    <!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+    <!-- add new -->
+    <div ng-if="!IS_LOADING" class="row" style="margin-top: 10px;">
+        <div class="col-xs-6" align="left">
+            <!-- <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add user</button>
+            <button class="btn btn-default btn-sm" ng-click='reloadData()'>Reload</button>
+            <button class="btn btn-default btn-sm" ng-click='generateXLSData()'>Excel</button>-->
+            <table cellpadding="100px" cellspacing="100px">
+                <tr>
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='btnAdd()'> 
+                        <img class="img img-responsive" src="./dist/img/Plus.png"></a>
+                    </td>
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='reloadData()'> 
+                        <img class="img img-responsive" src="./dist/img/Repeat.png"></a>
+                    </td>
+                    <td ng-if="0" style="padding:0 5px 0 5px;"> <a ng-click='btnSearch()'> 
+                        <button class="btn btn-xs btn-primary">Search user</button></a>
+                    </td>
+                    <!--<td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("download")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Acrobat.png"></a></td>
+                    <td style="padding:0 5px 0 5px;" ><a ng-click='generateXLSData()'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Excel.png"></a></td>
+                    <td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("print")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/Printer.png"></a></td>-->
+                </tr>
+            </table>
+        </div>
+        <div class="col-xs-6" align="right">
+            <div>
+                <span class="loc_sticker"><b>USERS</b></span>
+                <span class="loc_sticker_pg"><b>PAGE</b></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- listing table -->
+    <div ng-if="!IS_LOADING" class="row" style="width:100%;margin-left:20px;overflow-y: scroll; height:100%;" >
+        
+        <table datatable="" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table-responsive row-border hover" border="0">
+            <thead>
+                <tr class="custom_dt_header">
+                    <th>OPTIONS</th>
+                    
+                    <th>ID</th>
+                    
+                    <th>BRANCH</th>
+                    <th>COLOR</th>
+                    <th>UNIT</th>
+                    <th>PASSWORD</th>
+                    <th>ACCOUNT_NO</th>
+                    
+                    <th>USERNAME</th>
+                    
+                    <th>PHONE</th>
+                    
+                    <th>EMAIL</th>
+                    
+                    <th>ADDRESS</th>
+                    
+                    <th>SECTOR</th>
+                    <th>CLIENT</th>
+                    <th>GPUSH_ACCOUNT_ID</th>
+                    
+                    <th>EMAIL_PASSWORD</th>
+                    
+                    <th>SUSPENDED</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="data in USERS_LIST">
+                    <td style="min-width: 80px;">
+                        <a ng-click="btnEdit(data)" class="pencil"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-click="btnDelete(data)" class="trash"><span class="glyphicon glyphicon-trash"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-click="btnView(data)" class="eye"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    </td>
+                    
+                        
+                        
+                            
+                        <td class="g-tpl-id">{{ data.id }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.branch_info.name }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                        <td>
+                            <span style="background-color: {{data.unit_info.color}};">&nbsp;&nbsp;&nbsp;</span>
+                        </td>
+                        <td>
+
+                            {{ data.unit_info.name }}
+
+                        </td>
+
+                        <td>
+
+                            <button ng-click="openPasswordModal(data)" class="btn btn-default btn-xs">password</button>
+
+                        </td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.account_no }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.username }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.phone }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.email }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.address }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.sector }}</td>
+                            
+                        <td>{{ data.assigned_client_id }}</td>
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.gpush_account_id }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.email_password }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.suspended }}</td>
+                            
+                        
+
+                    
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- add new modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+            <!-- loading indicator-->
+            <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                <center>
+                    <div class="loader"> <i class="reloadMsg"></i> </div>
+                    <br>
+                    <i>{{ LOADING_MSG }}</i>
+                </center>
+            </div>
+
+            <div ng-if="!IS_LOADING" class="row main">
+                <div class="col-md-12" style="padding:30px;">
+                    <h3 class="g-tpl-title">Add user</h3><br>
+                    <form class="" method="post" action="#">
+
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                            
+                            <!--relation fields-->
+                            
+                            <tr>
+                                <td>unit</td>
+                                <td>
+                                     <select ng-model="NEW_OBJ.unit_id" ng-options="opt.id as opt.name for opt in UNITS_LIST" class="form-control input-normal" style="width:250px;">
+                                     </select><br>
+
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>branch</td>
+                                <td>
+                                     <select ng-model="NEW_OBJ.branch_id" ng-options="opt.id as opt.name for opt in BRANCHES_LIST" class="form-control input-normal" style="width:250px;">
+                                     </select>
+
+                                </td>
+                            </tr>
+                            
+                            
+                        	
+                    		<tr>
+                                <td width="30%">account_no</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.account_no" type="text" class="form-control input-normal" placeholder="Enter account_no" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">username</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.username" type="text" class="form-control input-normal" placeholder="Enter username" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">phone</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.phone" type="text" class="form-control input-normal" placeholder="Enter phone" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">email</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.email" type="text" class="form-control input-normal" placeholder="Enter email" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">address</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <textarea ng-model="NEW_OBJ.address" rows="3" class="form-control input-normal" placeholder="Enter address" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">sector</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <select ng-model="NEW_OBJ.sector" ng-options='opt as opt for opt in ["OTHER","LV","HV","LH"]' ng-init="NEW_OBJ.sector = 'OTHER'" class="form-control input-normal" placeholder="Enter sector" style="width:250px;"/>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="30%">assigned_client_id</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.assigned_client_id" type="number" class="form-control input-normal" placeholder="Enter assigned_client_id" style="width:250px;" />
+                                    </div>
+                                
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">gpush_account_id</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.gpush_account_id" type="text" class="form-control input-normal" placeholder="Enter gpush_account_id" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">email_password</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.email_password" type="password" class="form-control input-normal" placeholder="Enter email_password" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">suspended</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <select ng-model="NEW_OBJ.suspended" ng-options='opt as opt for opt in [0,1]' ng-init="NEW_OBJ.suspended = 0" class="form-control input-normal" placeholder="Enter suspended" style="width:250px;"/>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                        </table>
+
+                    </form>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="addNew()">Add</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /add new modal -->
+
+
+
+
+
+    <!-- update modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                 <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+                    <center>
+                        <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+                        <div class="loader"></div>
+                        <br>
+                        <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+                        <br><br><br>
+                        <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Update user</h3><br>
+                        <form class="" method="post" action="#">
+
+
+                            <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                                <!--relation fields-->
+                                
+                                <tr>
+                                    <td>unit</td>
+                                    <td>
+                                        <select ng-model="EDITABLE_OBJ.unit_id" ng-options="opt.id as opt.name for opt in UNITS_LIST" class="form-control input-normal" style="width:250px;">
+                                        </select><br>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>branch</td>
+                                    <td>
+                                        <select ng-model="EDITABLE_OBJ.branch_id" ng-options="opt.id as opt.name for opt in BRANCHES_LIST" class="form-control input-normal" style="width:250px;">
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                
+
+	                        		<tr>
+		                                <td width="30%">account_no</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.account_no" type="text" class="form-control input-normal" placeholder="Enter account_no" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">username</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.username" type="text" class="form-control input-normal" placeholder="Enter username" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">phone</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.phone" type="text" class="form-control input-normal" placeholder="Enter phone" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">email</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.email" type="text" class="form-control input-normal" placeholder="Enter email" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">address</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <textarea ng-model="EDITABLE_OBJ.address" rows="3" class="form-control input-normal" placeholder="Enter address" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">sector</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <select ng-model="EDITABLE_OBJ.sector" ng-options='opt as opt for opt in ["OTHER","LV","HV","LH"]' ng-init="EDITABLE_OBJ.sector = 'sector'" class="form-control input-normal" placeholder="Enter sector" style="width:250px;"/>
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+                                    <tr>
+                                        <td width="30%">assigned_client_id</td>
+                                        <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.assigned_client_id" type="number" class="form-control input-normal" placeholder="Enter assigned_client_id" style="width:250px;" />
+                                            </div>
+                                        
+                                        </td>
+                                    </tr>
+
+	                        		<tr>
+		                                <td width="30%">gpush_account_id</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.gpush_account_id" type="text" class="form-control input-normal" placeholder="Enter gpush_account_id" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">email_password</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.email_password" type="text" class="form-control input-normal" placeholder="Enter email_password" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">suspended</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <select ng-model="EDITABLE_OBJ.suspended" ng-options='opt as opt for opt in [0,1]' " class="form-control input-normal" placeholder="Enter suspended" style="width:250px;"/>
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="update()">Update</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /update modal -->
+
+    <!-- view modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <div ng-if="1" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">user</h3><br>
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                        	
+
+                        		<tr>
+	                                <td width="30%">id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">branch_id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.branch_id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">unit_id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.unit_id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">account_no</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.account_no }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">username</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.username }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">phone</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.phone }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">email</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.email }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">address</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.address }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">sector</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.sector }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                                <tr>
+                                    <td width="30%">assigned_client_id</td>
+                                    <td>
+                                        <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.assigned_client_id }}</b></span>
+                                        
+                                        </div>
+                                    </td>
+                                </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">gpush_account_id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.gpush_account_id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">email_password</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.email_password }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">suspended</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.suspended }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+                        </table>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success g-tpl-success" data-dismiss="modal" ng-click="closeModal()">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /view modal -->
+
+    <!-- delete modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Delete a user</h3><br>
+                        Are you sure you want to delete a user?
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-danger g-tpl-danger" ng-click="delete()">Delete</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /delete modal -->
+
+
+      <!-- search modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i></i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Enter user</h3><br>
+                        <input type="text" ng-model="SEARCH_OBJ.search_key" class="form-control input-normal" placeholder="Enter user Here" name="">
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-warning g-tpl-warning" ng-click="deep_search_user()">Search Now</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /search modal -->
+
+
+
+    <!-- password modal -->
+    <div class="modal fade" id="editPasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <img src="./dist/img/loaders/loader_1.gif" class="img-responsive"><br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 style="color:#348af9;">User's Password<br><br>
+                            <span style="color:gray;">{{ PICKED_OBJ.username }}
+                            </span><br><br>
+                            <span style="color:black;">{{ PICKED_OBJ.account_no }}
+                            </span>
+                            </h3><br>
+                        <input ng-model="NEW_PASSWORD_OBJ.user_password" type="text" class="form-control" name="" placeholder="password"><br>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-warning" ng-click="updateUsersPassword()">Change User's Password</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /password modal -->
+
+
+</div>
+<!-- /listings -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

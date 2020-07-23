@@ -1,0 +1,497 @@
+<style type="text/css">
+    .code1{
+            background-color: #e1f3f5;
+        }
+        .code2{
+            background-color: #b3e3cb;
+        }
+        .code3{
+            background-color: #e9d4fa;
+        }
+        .code4{
+            background-color: #f2eed5;
+        }
+</style>
+
+<!-- listings -->
+
+<div style="margin:10px;">
+
+   
+    <!-- add new -->
+    <div class="row" style="margin-top:60px;">
+        <div class="col-xs-10" align="left">
+            <!-- <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add branch</button>
+            <button class="btn btn-default btn-sm" ng-click='reloadData()'>Reload</button>
+            <button class="btn btn-default btn-sm" ng-click='generateXLSData()'>Excel</button>-->
+            <table cellpadding="100px" cellspacing="100px">
+                <tr>
+                    
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='reloadData()'> 
+                        <img class="img img-responsive" src="./dist/img/Repeat.png"></a>
+                    </td>
+                    <td ng-if="0" style="padding:0 5px 0 5px;"> <a ng-click='btnSearch()'> 
+                        <button class="btn btn-xs btn-primary">Search branch</button></a>
+                    </td>
+                    <td>
+                        <input type="text" ng-model="FILTER_OPTION.search_key" placeholder="search-key" name="">
+                    </td>
+                    <td>
+                        &nbsp;S:&nbsp;
+                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="FILTER_OPTION.start_date"/>
+                    </td>
+                    <td>
+                        &nbsp;E:&nbsp;
+                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="FILTER_OPTION.end_date"/>
+                    </td>
+
+                    <td>&nbsp;
+                        <button class="btn btn-default btn-xs" ng-click="filterAssignments()">Filter Shipments</button>
+                    </td>
+                    <td>&nbsp;
+                        <a target="_blank" class="btn btn-default btn-xs" onclick="selectElementContents( document.getElementById('dtTable') );">
+                            <span class="glyphicon glyphicon-file" style="color:green;"></span>&nbsp;
+                        Copy to Excel</a>
+                    </td>
+                </tr>
+            </table>
+            <br>
+        </div>
+        <div class="col-xs-2" align="right">
+            <div>
+                <span class="loc_sticker"><span class="badge">{{SHIPMENTS.length}}</span>&nbsp;<b>CUSTOMS</b></span>
+                <span class="loc_sticker_pg"><b>PAGE</b></span>
+            </div>
+        </div>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <td>&nbsp;Category:&nbsp;
+                    <select ng-options="opt as opt for opt in ['CAGE','DATE','AWB']" ng-model="FILTER_OPTION.filter_category"></select>
+                    &nbsp;&nbsp;&nbsp;
+                </td>
+                
+                <td>&nbsp;Vendor:&nbsp;
+                    <select ng-options="opt.id as opt.name for opt in VENDORS_LIST" ng-model="FILTER_OPTION.vendor_id"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+
+                <td>&nbsp;M/P:&nbsp;
+                    <select ng-options="opt as opt for opt in ['M','P','MP','A']" ng-model="FILTER_OPTION.shipment_type"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+
+
+                <td>&nbsp;Value:&nbsp;
+                    <select ng-options="opt as opt for opt in ['HV','LV','LV_HV','ND','ALL']" ng-model="FILTER_OPTION.lh_value"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+
+                <td>&nbsp;Bill:&nbsp;
+                    <select ng-options="opt as opt for opt in ['S','C','N','O','A']" ng-model="FILTER_OPTION.bill_to"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+                <td>&nbsp;Verified:&nbsp;
+                    <select ng-options="opt as opt for opt in ['ALL','VERIFIED','NOT-VERIFIED']" ng-model="FILTER_OPTION.verified_status"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+                <td>&nbsp;Clr-By:&nbsp;
+                    <select ng-options="opt as opt for opt in ['ALL','BROKER','INTERNAL']" ng-model="FILTER_OPTION.clearing_opt"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+                <td>&nbsp;CS:&nbsp;
+                    <select ng-options="opt.id as opt.username for opt in CS_LIST" ng-model="FILTER_OPTION.cs_id"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+
+                <td>&nbsp;RO-STATUS:&nbsp;
+                    <select ng-options="opt as opt for opt in ['ALL','GENERATED','PENDING']" ng-model="FILTER_OPTION.ro_status"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+                <td>&nbsp;STATUS:&nbsp;
+                    <select ng-options="opt as opt for opt in ['ALL','AT-CUSTOMS','RELEASED','ABANDONED','INTERNAL-ABANDONED','CUSTOMS-ABANDONED','RELEASED-ABANDONED']" ng-model="FILTER_OPTION.released_status"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+                <td ng-if="FILTER_OPTION.filter_category == 'CAGE'">&nbsp;Untouched Duration:&nbsp;
+                    <select ng-options="opt.hrs as opt.code for opt in TASK_UPDATE_DURATIONS" ng-model="FILTER_OPTION.untouched_hrs"></select>
+                    &nbsp&nbsp&nbsp
+                </td>
+
+                <td>
+                    <button ng-click="openAssignWorkerModal()" class="btn btn-xs btn btn-primary">ASSIGN-SHIPMENTS</button>
+                </td>
+
+
+                
+            </tr>
+        </table>
+    </div>
+
+
+
+    <!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+
+    <!-- listing table -->
+    <div ng-if="!IS_LOADING" class="table-responsive">
+        <table id="dtTable" class="table table-stripped">
+            <thead class="custom_dt_header">
+                <tr> 
+                    <td>
+                        <span ng-click="selectAll()">Select(*)</span>
+                    </td>
+                    <td>AWB</td>
+                    <td>CONSIGNEE</td>
+                    <td>CS</td>
+                    <td>MPS</td>
+                    <td>VERIFIED</td>
+                    <td>ARR-DATE</td>
+                    <td>LAST-STATUS</td>
+                    <td>UPDATED-DATE</td>
+                    <td>LAST-UPDATE</td>
+                    <td>MASTER-#</td>
+                    <td>DUTY-TO</td>
+                    
+                    <td>RO</td>
+                    <td>RO-STATUS</td>
+
+                    <td>TYPE</td>
+                    <td>BROKER</td>
+                    <td>RELEASED</td>
+                    <td>ABANDONED</td>
+                    <td>HV/LV</td>
+                    <td>CURR</td>
+                    <td>CUSTOMS</td>
+                    <td>CUSTOMS(USD)</td>
+
+                    
+                    <td>TOTAL</td>
+                    <td>WEIGHT</td>
+                    <td>DESC</td>
+                    
+
+
+                    <td>DEST</td>
+                    <td>CONS.ACC</td>
+                    <td>CONS.PHONE</td>
+                    <td>CONS.CMPNY</td>
+                    <td>CONS.NAME</td>
+                    <td>CONS.ADDR1</td>
+                    <td>CONS.ADDR2</td>
+                    <td>CONS.CITY</td>
+                    <td>CONS.STATE</td>
+                    <td>CONS.CNTY</td>
+                    <td>CONS.POSTAL</td>
+                    
+                </tr>
+            </thead>
+            <tbody style="color: gray;font-size: 0.9em;">
+                <tr ng-repeat="data in SHIPMENTS | filter : SEARCH_OBJ.search_key">
+
+                    <td>
+                        <div style="width: 30px;">
+                            <input style="width: 40px;height:40px;" type="checkbox" ng-model="data.is_checked" name="">
+                        </div>
+                    </td>
+                    
+                    <td class="code3">
+                        <div style="width: 135px;">
+                            <!--dutables-->
+                            <span ng-if="data.dutable" style="background-color: blue;color:white;width: 30px;height: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span ng-if="!data.dutable" style="background-color: orange;color:white;width: 30px;height: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+                            <b>{{ data.awb_no }}</b>
+                        </div>
+                    </td>
+                    <td class="code1">{{ data.consignee_company }}</td>
+                    <td>
+                        <div ng-if="data.assigned_cs == -1 || data.assigned_cs == null || data.assigned_cs == undefined" style="background-color: red;color:yellow;padding: 5px;">
+                            NA
+                        </div>
+                        <div ng-if="data.assigned_cs != -1" style="font-weight: bold;color: gray;">
+                            {{data.cs_assigned.username}}
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width: 60px;"><span ng-if="(data.awb_no == data.master_awb_no) || (data.master_awb_no == null) || data.master_awb_no == ''" style="background-color: blue;color:yellow;padding: 5px;">
+                            M
+                        </span>
+                        <span ng-if="(data.master_awb_no != null) && (data.master_awb_no != '')" style="background-color:purple;font-weight: bold;color: yellow;padding: 5px;">
+                            P
+                        </span></div>
+                    </td>
+                    <td>
+                        <div ng-if="data.held_at_customs.verified == 1" style="background-color: green;color:yellow;padding:5px;">
+                            YES
+                        </div>
+                        <div ng-if="data.held_at_customs.verified != 1" class="blink" style="background-color: orange;color:green;padding:5px;">
+                            NV
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width: 90px;color:gray;">
+                            {{data.arrival_date}}
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width: 90px;color:gray;">
+                            {{data.last_status}}
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width: 90px;color:gray;">
+                            {{data.scan_updated_at.substring(0, 10)}}
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width: 90px;color:gray;">
+                            {{HelperService.getPastDurationFromNowPeriod(data.status_updated_at)}}
+                        </div>
+                    </td>
+                     <td>
+                        {{ data.master_awb_no }}
+                    </td>
+                    <td>
+                        {{ data.bill_duty_to }}
+                    </td>
+                   
+
+                    <!--RO-->
+                    <td>
+                        <div>
+                            {{data.ro_min_info.ro_no}}
+                        </div>
+                    </td>
+                    <td>
+                        <span style="background-color: green;color:blue;padding:5px;" ng-if="data.ro_min_info != null">GENERATED</span>
+                        <span style="background-color: red;color:gray;padding:5px;" ng-if="data.ro_min_info ==null">PENDING</span>
+                    </td>
+
+
+                   
+                    <!--fedex/tnt/courierit-->
+                    <td style="font-size:0.8em;background-color: {{data.vendor.color}};color:white;">{{data.vendor.name}}</td>
+
+                    <td>
+                        <span ng-if="data.is_inhouse == 0" style="color:orange;" >BROKER</span>
+                        <span ng-if="data.is_inhouse == 1" style="color:gray;" >INTERNAL</span>
+                        <span ng-if="data.is_inhouse != 0 && data.is_inhouse != 1" style="color:gray;" >*INTERNAL</span>
+                    </td>
+                    <td>
+                        <span ng-if="data.held_at_customs.is_released == 1" style="color:green;" >RELEASED</span>
+                        <span ng-if="data.held_at_customs.is_released != 1" style="color:gray;" >--</span>
+                    </td>
+                    <td>
+                        <span ng-if="data.held_at_customs.abandoned_level == 1" style="color:red;" >INTERNAL-ABANDONED</span>
+                        <span ng-if="data.held_at_customs.abandoned_level == 2" style="color:red;" >CUSTOMS-ABANDONED</span>
+                    </td>
+
+                    
+
+                    
+                    <!--High / low-->
+                    <td>
+                        <div ng-if="data.lh_type == 'LV'" style="background-color: orange;color:blue;">
+                            LV
+                        </div>
+                        <div ng-if="data.lh_type == 'HV'" style="background-color: white;color:red;">
+                            HV
+                        </div>
+                        <div ng-if="data.lh_type == 'ND'" style="background-color: white;color:gray;">
+                            ND
+                        </div>
+                    </td>
+
+                    <td class="code2">{{ data.currency }}</td>
+                    <td class="code2"><b>{{ data.customs_value }}</b></td>
+                    <td class="code4">
+                        <div ng-if="data.customs_value_in_usd == -1" style="background-color: red;color:white;padding:10px;">
+                            Error
+                        </div>
+                        <div ng-if="data.customs_value_in_usd != -1">
+                            <b>$ {{ data.customs_value_in_usd }}</b>
+                        </div>
+                    </td>
+
+
+                   
+                    <td>
+                        <div ng-if="pcs != null">
+                            {{ data.pcs }}
+                        </div>
+                        <div ng-if="pcs == null">
+                            {{ data.pkg_counts }}
+                        </div>
+                    </td>
+                    <td class="code3">{{ data.weight }} {{ data.uom }}</td>
+                    <td>{{ data.shipment_description }}</td>
+                    
+
+
+                    
+                    <td>{{ data.dest_gateway }}</td>
+                    
+                    <td class="code1">{{ data.consignee_account }}</td>
+                    <td class="code1">{{ data.consignee_phone }}</td>
+                    <td class="code1">{{ data.consignee_company }}</td>
+                    <td class="code1">{{ data.consignee_name }}</td>
+                    <td class="code1">{{ data.consignee_addr1 }}</td>
+                    <td>{{ data.consignee_addr2 }}</td>
+                    <td>{{ data.consignee_city }}</td>
+                    <td>{{ data.consignee_state }}</td>
+                    <td>{{ data.consignee_country_code }}</td>
+                    <td>{{ data.consignee_postal }}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<!-- /listings -->
+
+
+
+ <!-- delete modal -->
+    <div class="modal fade" id="bulkROModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Bulk RO's({{getAllSelectedShipments().length}})</h3><br>
+                        
+                        <span>START FROM</span><br>
+                        <input type="number" ng-model="SEARCH_OBJ.start_ro_no" name=""><br>
+
+                        <br>
+                        <center>
+                            <span style="color:gray;">RO-BATCH-NO IS <b>{{SEARCH_OBJ.ro_batch_no}}</b></span>
+                        </center>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="generateBulkROSNow()">GENERATE BULK RO</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /delete modal -->
+
+
+
+
+<!-- assign to worker modal -->
+    <div class="modal fade" id="assignWorkerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i>{{LOADING_MSG}}</i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Assign to <span style="color:orange;">{{ CURRENT_SELECTED_WORKER.username }}</span></h3><br>
+
+                        <input type="text" ng-model="SEARCH_OBJ.search_worker" class="form-control input-normal" placeholder="Search worker here" name=""><br>
+
+                        <div style="height: 300px;overflow: auto;">
+                            <table class="table">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Unit</td>
+                                    <td>Option</td>
+                                </tr>
+                                <tr ng-repeat="worker in CS_LIST | filter : SEARCH_OBJ.search_worker" style="overflow-y: auto;max-height: 10px;">
+                                    <td><b>{{ worker.username }}</b></td>
+                                    <td>
+                                        <span style="background-color: {{worker.unit_info.color}};color:white;padding:5px;">
+                                            {{worker.unit_info.name}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span ng-if="worker.id != -1 && worker.id != -2" class="btn btn-success btn-xs" ng-click="prepareThisWorker2BeAssigned(worker)">Pick</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="CURRENT_SELECTED_WORKER != undefined" type="button" class="btn btn-warning g-tpl-warning" ng-click="confirmAssignment()">Confirm Assignment</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /assign to worker modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

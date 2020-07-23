@@ -1,0 +1,524 @@
+<!-- listings -->
+<div>
+
+    <!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+    <!-- add new -->
+    <div ng-if="!IS_LOADING" class="row" style="margin-top: 10px;">
+        <div class="col-xs-6" align="left">
+            <!-- <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add flight_carrier</button>
+            <button class="btn btn-default btn-sm" ng-click='reloadData()'>Reload</button>
+            <button class="btn btn-default btn-sm" ng-click='generateXLSData()'>Excel</button>-->
+            <table cellpadding="100px" cellspacing="100px">
+                <tr>
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='btnAdd()'> 
+                        <img class="img img-responsive" src="./dist/img/Plus.png"></a>
+                    </td>
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='reloadData()'> 
+                        <img class="img img-responsive" src="./dist/img/Repeat.png"></a>
+                    </td>
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='btnSearch()'> 
+                        <button class="btn btn-xs btn-primary">Search flight_carrier</button></a>
+                    </td>
+                    <!--<td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("download")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Acrobat.png"></a></td>
+                    <td style="padding:0 5px 0 5px;" ><a ng-click='generateXLSData()'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Excel.png"></a></td>
+                    <td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("print")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/Printer.png"></a></td>-->
+                </tr>
+            </table>
+        </div>
+        <div class="col-xs-6" align="right">
+            <div>
+                <span class="loc_sticker"><b>FLIGHT-CARRIER</b></span>
+                <span class="loc_sticker_pg"><b>PAGE</b></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- listing table -->
+    <div ng-if="!IS_LOADING" class="row" style="width:100%;margin-left:20px;overflow-y: scroll; height:100%;" >
+        
+        <table datatable="" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table-responsive row-border hover" border="0">
+            <thead>
+                <tr class="custom_dt_header">
+                    <th>OPTIONS</th>
+                    
+                    <th>ID</th>
+                    
+                    <th>ORIGIN</th>
+                    
+                    <th>FLIGHT</th>
+                    
+                    <th>ETA</th>
+                    
+                    <th>DOW</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="data in FLIGHT_CARRIERS_LIST">
+                    <td style="min-width: 80px;">
+                        <a ng-click="btnEdit(data)" class="pencil"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-click="btnDelete(data)" class="trash"><span class="glyphicon glyphicon-trash"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-click="btnView(data)" class="eye"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    </td>
+                    
+                        
+                        
+                            
+                        <td class="g-tpl-id">{{ data.id }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.origin }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.flight }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.eta }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.dow }}</td>
+                            
+                        
+
+                    
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- add new modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+            <!-- loading indicator-->
+            <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                <center>
+                    <div class="loader"> <i class="reloadMsg"></i> </div>
+                    <br>
+                    <i>{{ LOADING_MSG }}</i>
+                </center>
+            </div>
+
+            <div ng-if="!IS_LOADING" class="row main">
+                <div class="col-md-12" style="padding:30px;">
+                    <h3 class="g-tpl-title">Add flight_carrier</h3><br>
+                    <form class="" method="post" action="#">
+
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                            
+                            <!--relation fields-->
+                            
+                            <!--/relation fields-->
+
+
+                            
+                    		<tr>
+                                <td width="30%">id</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.id" type="number" class="form-control input-normal" placeholder="Enter id" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">origin</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.origin" type="text" class="form-control input-normal" placeholder="Enter origin" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">flight</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.flight" type="text" class="form-control input-normal" placeholder="Enter flight" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">eta</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.eta" type="text" class="form-control input-normal" placeholder="Enter eta" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">dow</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.dow" type="text" class="form-control input-normal" placeholder="Enter dow" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                        </table>
+
+                    </form>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="addNew()">Add</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /add new modal -->
+
+
+
+
+
+    <!-- update modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                 <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+                    <center>
+                        <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+                        <div class="loader"></div>
+                        <br>
+                        <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+                        <br><br><br>
+                        <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Update flight_carrier</h3><br>
+                        <form class="" method="post" action="#">
+
+
+                            <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                                <!--relation fields-->
+                                
+                                <!--/relation fields-->
+                                
+
+	                        		<tr>
+		                                <td width="30%">id</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.id" type="number" class="form-control input-normal" placeholder="Enter id" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">origin</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.origin" type="text" class="form-control input-normal" placeholder="Enter origin" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">flight</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.flight" type="text" class="form-control input-normal" placeholder="Enter flight" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">eta</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.eta" type="text" class="form-control input-normal" placeholder="Enter eta" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">dow</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.dow" type="text" class="form-control input-normal" placeholder="Enter dow" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="update()">Update</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /update modal -->
+
+    <!-- view modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <div ng-if="1" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">flight_carrier</h3><br>
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                        	
+
+                        		<tr>
+	                                <td width="30%">id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">origin</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.origin }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">flight</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.flight }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">eta</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.eta }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">dow</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.dow }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+                        </table>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success g-tpl-success" data-dismiss="modal" ng-click="closeModal()">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /view modal -->
+
+    <!-- delete modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Delete a flight_carrier</h3><br>
+                        Are you sure you want to delete a flight_carrier?
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-danger g-tpl-danger" ng-click="delete()">Delete</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /delete modal -->
+
+
+      <!-- search modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i></i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Enter flight_carrier</h3><br>
+                        <input type="text" ng-model="SEARCH_OBJ.search_key" class="form-control input-normal" placeholder="Enter flight_carrier Here" name="">
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-warning g-tpl-warning" ng-click="deep_search_flight_carrier()">Search Now</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /search modal -->
+
+
+
+
+</div>
+<!-- /listings -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

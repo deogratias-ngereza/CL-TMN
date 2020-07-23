@@ -1,0 +1,193 @@
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top nav-bar-theme" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" ui-sref="app">CL-TAR</a>
+
+
+    </div>
+
+    <ul class="nav navbar-left top-nav">
+       
+        <li>
+            <a class="btn btn-xs" ui-sref="app.assignments({category:'ASSIGNED',user_id:-1,start_date:'2020-01-01',end_date:'2020-01-10',username:'Grand Master',assigned_status:1})">
+                <span class="glyphicon glyphicon-list-alt"></span>
+                &nbsp;
+                <span>UN-ASSIGNED QUEUE</span>
+            </a>
+        </li>
+        <li>
+            <a class="btn btn-xs" ui-sref="app.assignments({category:'UN-ASSIGNED',user_id:-1,start_date:'2020-01-01',end_date:'2020-01-10',username:'Grand Master',assigned_status:0})">
+                <span class="glyphicon glyphicon-list-alt"></span>
+                &nbsp;
+                <span>ASSIGNED QUEUE</span>
+            </a>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-list-alt"></i> 
+                
+                Arrivals&nbsp;
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li >
+                    <a ui-sref="app.summary"><i class="glyphicon glyphicon-arrow-right"></i> Summary</a>
+                </li><li class="divider"></li>
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> Today's Arrival</a>
+                </li>
+                <li class="divider"></li>
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> RO generated</a>
+                </li>
+                <li class="divider"></li>
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> RO not generated</a>
+                </li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-list-alt"></i> 
+                
+                Verification&nbsp;
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> Verified</a>
+                </li>
+                <li class="divider"></li>
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> Un-Verified</a>
+                </li>
+
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-list-alt"></i> 
+                
+                Assignment&nbsp;
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li >
+                    <a ui-sref="app.summary"><i class="glyphicon glyphicon-arrow-right"></i> Summary</a>
+                </li>
+                <li class="divider"></li>
+                <li >
+                    <a ui-sref="app.manual_assign"><i class="glyphicon glyphicon-arrow-right"></i> Manual Assign</a>
+                </li>
+                <li class="divider"></li>
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> Assigned</a>
+                </li>
+                <li class="divider"></li>
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> Un-Assigned</a>
+                </li>
+                <li class="divider"></li>
+                
+            </ul>
+        </li>
+
+
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-list-alt"></i> 
+                
+                Cage&nbsp;
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li >
+                    <a ui-sref="app.summary"><i class="glyphicon glyphicon-arrow-right"></i> Summary</a>
+                </li>
+                <li class="divider"></li>
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> Cage</a>
+                </li>
+                <li class="divider"></li>
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> Cage (Internal)</a>
+                </li>
+                <li class="divider"></li>
+                <li >
+                    <a><i class="glyphicon glyphicon-arrow-right"></i> Cage (Broker)</a>
+                </li>
+            </ul>
+        </li>
+
+       
+
+    </ul>
+    <!-- Top Menu Items -->
+    <ul class="nav navbar-right top-nav">
+        <!--<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
+            <ul class="dropdown-menu message-dropdown">
+               
+                <li class="message-preview">
+                    <a href="#">
+                        <div class="media">
+                            <span class="pull-left">
+                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                    </span>
+                            <div class="media-body">
+                                <h5 class="media-heading"><strong>John Smith</strong>
+                                </h5>
+                                <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li class="message-footer">
+                    <a href="#">Read All New Messages</a>
+                </li>
+            </ul>
+        </li>-->
+        <!--<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+            <ul class="dropdown-menu alert-dropdown">
+                <li>
+                    <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">View All</a>
+                </li>
+            </ul>
+        </li>-->
+        <li class="dropdown hidden-xs">
+            <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{CURRENT_USER.username}} : {{CURRENT_USER.account_no}} <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li  ng-if="0">
+                    <a><i class="fa fa-fw fa-user"></i> Profile</a>
+                </li>
+                <li  ng-if="0">
+                    <a><i class="fa fa-fw fa-gear"></i> Settings</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+
+
+
+    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens ->
+    <div ng-include="'./dist/ng/views/components/sidebar.html'"></div>
+    <!-- /.navbar-collapse -->
+
+
+    
+</nav>
+<!-- /Navigation -->

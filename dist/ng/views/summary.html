@@ -1,0 +1,125 @@
+
+
+<br>
+<!-- listings -->
+<div style="margin:15px;">
+
+    <!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+
+
+    <div ng-if="!IS_LOADING">
+    	
+    	
+    	<div class="row">
+    		<div class="col col-md-3 col-xs-12">
+    			
+    			<table class='table'>
+    				<tr style="background-color: gray;color:white">
+    					<td>Username</td>
+    					<td>Account</td>
+    				</tr>
+    				<tr ng-repeat="data in SUMMARY.list">
+    					<td>
+    						
+    						<a ng-click="selectThisWorker(data)">{{data.worker.username}}</a>
+    					</td>
+    					<td>
+    						{{data.worker.account_no}}
+    					</td>
+    				</tr>
+    			</table>
+
+    		</div>
+    		<div class="col col-md-9 col-xs-12">
+    			<table width="100%" class="table">
+    				<tr>
+    					<td>
+    						<div style="color: black;font-weight: bold;font-size: 2em;text-align: center;">
+    							CAGE
+    						</div>
+    					</td>
+    					<td>
+    						<div style="color: black;font-weight: bold;font-size: 2em;text-align: center;">
+    							ABANDONED
+    						</div>
+    					</td>
+    					<td>
+    						<div style="color: black;font-weight: bold;font-size: 2em;text-align: center;">
+    							BROKER - CAGE
+    						</div>
+    					</td>
+    					<td>
+    						<div style="color: black;font-weight: bold;font-size: 2em;text-align: center;">
+    							BROKER
+    						</div>
+    					</td>
+    					<td>
+    						<div style="color: black;font-weight: bold;font-size: 2em;text-align: center;">
+    							RELEASED
+    						</div>
+    					</td>
+    				</tr>
+    				<tr>
+    					<td>
+    						<div style="color: purple;font-weight: bold;font-size: 3em;text-align: center;border:1px solid #d6d4d4;">
+    							{{SELECTED_WORKER.cage_shipments_counts}}
+    						</div>
+    					</td>
+    					<td>
+    						<div style="color: red;font-weight: bold;font-size: 3em;text-align: center;border:1px solid #d6d4d4;">
+    							{{SELECTED_WORKER.cage_shipments_abandoned_counts}}
+    						</div>
+    					</td>
+    					<td>
+    						<div style="color: orange;font-weight: bold;font-size: 3em;text-align: center;border:1px solid #d6d4d4;">
+    							{{SELECTED_WORKER.cage_shipments_broker_counts}}
+    						</div>
+    					</td>
+    					<td>
+    						<div style="color: blue;font-weight: bold;font-size: 3em;text-align: center;border:1px solid #d6d4d4;">
+    							{{SELECTED_WORKER.shipments_broker_counts}}
+    						</div>
+    					</td>
+    					<td>
+    						<div style="color: green;font-weight: bold;font-size: 3em;text-align: center;border:1px solid #d6d4d4;">
+    							{{SELECTED_WORKER.cage_shipments_released_counts}}
+    						</div>
+    					</td>
+
+    				</tr>
+    			</table>
+    			<table class="table" >
+    				<tr style="background-color: gray;color:white">
+    					<td>Date</td>
+    					<td>Day</td>
+    					<td>Total Assigned</td>
+    					<td>Total Internal</td>
+    					<td>Total Broker</td>
+    				</tr>
+    				<tr ng-repeat="data in SELECTED_WORKER.graph_cs_assignment">
+    					<td>{{data.assigned_cs_date}}</td>
+    					<td>{{HelperService.getWeekDayName(data.assigned_cs_date,'long')}}</td>
+    					<td>{{data.total_counts}}</td>
+    					<td>{{data.internal}}</td>
+    					<td>{{data.total_counts - data.internal}}</td>
+    				</tr>
+    			</table>
+    		</div>
+    	</div>
+
+
+    </div>
+
+
+</div>

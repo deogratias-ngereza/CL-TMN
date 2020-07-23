@@ -1,0 +1,107 @@
+
+
+
+
+<div class="container">
+	
+
+	 <!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+	<div ng-if="!IS_LOADING" class="row">
+		
+		<div style="width: 100%;border:1px solid gray;margin-top:40px;padding:20px;">
+			
+			<table width="100%">
+				<tr>
+					<td>
+						<img src="./dist/img/logo.png" class="img-responsive" width="100" height="100"></img>
+						<br>
+						<b>PAYMENT - RECEIPT (AWB # : {{RECEIPT_DATA.awb_no}})</b>
+					</td>
+					<td>
+						
+					</td>
+				</tr>
+			</table>
+			<br>
+
+
+			<table>
+				<tr>
+					<td>
+						RECEIPT NO:
+					</td>
+					<td>&nbsp;&nbsp;&nbsp;
+						<input type="text" ng-model="RECEIPT_DATA.receipt_no" placeholder="receipt_no" name="">
+					</td>
+					<td>&nbsp;&nbsp;&nbsp;
+						<input type="text" placeholder="Paid By" ng-model="RECEIPT_DATA.paid_by" name="">
+					</td>
+				</tr>
+				<tr>
+					<td><br>
+						<b>PAYABLES</b>
+					</td>
+					<td><br>&nbsp;&nbsp;&nbsp;
+						MODE
+					</td>
+					<td><br>&nbsp;&nbsp;&nbsp;
+						<select ng-options="opt.id as opt.name for opt in PAYMENT_RECEIPT_BUNDLES.payment_modes" ng-model="RECEIPT_DATA.payment_mode_id"></select>
+					</td>
+				</tr>
+				<tr ng-repeat="data in PAYMENT_RECEIPT_BUNDLES.payable_services | reverse">
+					<td>
+						{{data.name}}
+					</td>
+					<td ng-init="data.amount = 0">&nbsp;&nbsp;&nbsp;
+						<input ng-model="data.amount" ng-change="calculate()" type="number" name="">
+					</td>
+					<td>
+						
+					</td>
+				</tr>
+
+				<tr>
+					<td><br>
+						<b>TOTAL</b>
+					</td>
+					<td><br>
+						<b>{{RECEIPT_DATA.total_amount | number}}</b>
+					</td>
+					<td><br>
+						<input type="text" ng-model="RECEIPT_DATA.currency" name="">
+					</td>
+
+				</tr>
+
+				<tr>
+					<td colspan="3" style="color:gray;font-style: italic;">
+						
+						<br><br>
+						<span>By</span><br>
+						<span>{{CURRENT_USER.username}}</span>
+					</td>
+				</tr>
+
+
+			</table>
+
+		</div>
+
+		<br><br>
+		<center>
+			<button ng-if="RECEIPT_DATA.receipt_no != '' && RECEIPT_DATA.paid_by != '' && RECEIPT_DATA.payment_mode_id != -1 && RECEIPT_DATA.currency != '' && RECEIPT_DATA.total_amount != 0" ng-click="receive_payments()" class="btn btn-lg btn-success">Add Payment</button>
+		</center>
+
+	</div>
+</div>

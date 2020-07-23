@@ -1,0 +1,286 @@
+
+<div class="">
+
+	<div width="row">
+		<div class="col col-md-12">
+			<!-- listings -->
+			<div style="margin:0px;">
+
+			   
+			    <!-- add new -->
+			    <div class="row" style="margin-top:30px;">
+			        <div class="col-xs-11" align="left">
+			            <!-- <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add branch</button>
+			            <button class="btn btn-default btn-sm" ng-click='reloadData()'>Reload</button>
+			            <button class="btn btn-default btn-sm" ng-click='generateXLSData()'>Excel</button>-->
+			            <table cellpadding="100px" cellspacing="100px">
+			                <tr>
+			                    <td>
+			                    	<span ng-if="SHOW_SIDEVIEW" ng-click="toggleSideView()" class="glyphicon glyphicon-resize-full"></span>
+			                    	<span ng-if="!SHOW_SIDEVIEW" ng-click="toggleSideView()" class="glyphicon glyphicon-resize-small"></span>
+			                    	&nbsp;&nbsp;
+			                    </td>
+			                    <td style="padding:0 5px 0 5px;"> <a ng-click='reloadData()'> 
+			                        <img class="img img-responsive" src="./dist/img/Repeat.png"></a>
+			                    </td>
+			                    <td ng-if="0" style="padding:0 5px 0 5px;"> <a ng-click='btnSearch()'> 
+			                        <button class="btn btn-xs btn-primary">Search branch</button></a>
+			                    </td>
+			                    <td>
+			                        <input type="text" ng-model="SEARCH_OBJ.search_key" name="">
+			                    </td>
+			                    <td>
+			                        &nbsp;S:&nbsp;
+			                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.start_date"/>
+			                    </td>
+			                    <td>
+			                        &nbsp;E:&nbsp;
+			                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.end_date"/>
+			                    </td>
+
+			                    <td>&nbsp;
+			                        <a class="btn btn-default btn-xs" ng-click="filter_shipments()">Filter Shipments</a>
+			                    </td>
+
+			                    <td>&nbsp;
+			                        <a target="_blank" class="btn btn-default btn-xs" onclick="selectElementContents( document.getElementById('dtTable') );">
+			                        	<span class="glyphicon glyphicon-file" style="color:green;"></span>&nbsp;
+			                        Copy to Excel</a>
+			                    </td>
+
+			                    
+			                </tr>
+			            </table>
+			            <br>
+			        </div>
+			        <div class="col-xs-1" align="right">
+			            <div>
+			                <span class="loc_sticker"><span class="badge">{{SHIPMENTS.length}}</span>&nbsp;</span>
+			                <!--<span class="loc_sticker_pg"><b>PAGE</b></span>-->
+			            </div>
+			        </div>
+			    </div>
+			    <div ng-if="0">
+			    	<table>
+			    		<tr>
+			    			
+			                <td>&nbsp;Value:&nbsp;
+			                    <select ng-options="opt as opt for opt in ['HV','LV','ND','ALL']" ng-model="SEARCH_OBJ.lh_value"></select>
+			                    &nbsp&nbsp&nbsp
+			                </td>
+
+			                <td>&nbsp;Bill:&nbsp;
+			                    <select ng-options="opt as opt for opt in ['S','C','N','A']" ng-model="SEARCH_OBJ.bill_to"></select>
+			                    &nbsp&nbsp&nbsp
+			                </td>
+
+			                
+			                
+
+
+			                
+			    		</tr>
+			    	</table>
+			    </div>
+
+
+
+			    <!-- loading indicator-->
+			    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+			        <center>
+			            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+			            <div class="loader"></div>
+			            <br>
+			            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+			            <br><br><br>
+			            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+			        </center>
+			    </div>
+
+
+			    <!-- listing table -->
+			    <div ng-if="!IS_LOADING" class="table-responsive">
+			        <table id="dtTable" class="table table-stripped">
+			            <thead class="custom_dt_header">
+			                <tr> 
+			                	<td><span><i>i</i></span></td>
+			                	<td>COLOR</td>
+			                    <td>AWB</td>
+			                    <td>ACTIONS</td>
+			                    <td>CONS.CMPNY</td>
+			                    <td>CONS.NAME</td>
+			                    <td>ARRIVAL-DATE</td>
+			                    <td>BROKER</td>
+			                    <td>P.W.HAND DATE</td>
+			                    <td>P.S.PL DATE</td>
+			                    <td>POD DATE</td>
+
+			                    <!--payable services(DATE)-->
+			                    <td>DATE</td>
+			                    <td>BREAK BULK FEE</td>
+			                    <td>RECEIPT</td>
+			                    <td>DATE</td>
+			                    <td>STORAGE</td>
+			                    <td>RECEIPT</td>
+			                    <td>DATE</td>
+			                    <td>KEBS</td>
+			                    <td>RECEIPT</td>
+
+
+			                    <td>STATUS</td>
+			                    <td>COMMENT</td>
+			                    <td>REMARKS</td>
+
+			                </tr>
+			            </thead>
+			            <tbody style="color: gray;font-size: 0.9em;">
+			                <tr ng-repeat="data in SHIPMENTS | filter : SEARCH_OBJ.search_key" ng-init="data.current_detected_customer = undefined;data.selected_for_detection = 0;data.current_detected_customers = []"
+			                style="background-color: {{data.selected_for_detection == 1 ? '#fcd02d':'';}};">
+			                	<td><b>{{$index + 1}}</b></td>
+			                	<td>
+			                		<span style="background-color: {{data.cleared_by_broker.status_color}};width:20px;">&nbsp;&nbsp;-&nbsp;{{data.cleared_by_broker.status}}</span>
+			                	</td>
+			                    <td class="">
+			                    	<div style="width: 135px;">
+			                    		
+
+			                    		<b>{{ data.awb_no }} ({{ data.bill_duty_to }})</b>
+			                    	</div>
+			                    </td>
+
+			                    <!--view actions-->
+			                    <td>
+			                    	<div ng-init="data.view_actions = 0">
+			                    		<span class="badge" ng-if="data.view_actions == 0" ng-click="data.view_actions = 1">view</span>
+			                    		<span class="badge" ng-if="data.view_actions == 1" ng-click="data.view_actions = 0">hide</span>
+			                    	</div><br>
+			                    	<div ng-if="data.view_actions == 1">
+			                    		<a ui-sref="app.receive_payments({broker_ship_entry_id:data.cleared_by_broker.id,shipment_id:data.id,awb_no:data.awb_no})" class="btn btn-xs btn-default">Receive Payments</a>
+			                    		<br><br> 
+			                    		<button class="btn btn-xs btn-default">Mark POD </button>
+			                    		<br><br>
+			                    		<a ui-sref="app.status_changer({shipment_id:data.id,awb_no:data.awb_no})" class="btn btn-xs btn-default">Change Status</a>
+			                    		<br>
+			                    	</div>
+			                    </td>
+
+			                    <td class="">
+			                    	<span ng-if="data.customer_id == -1" ng-click="openAddCustomerModal($index,data)" style="color:white;background-color: green;padding:2px;"><span  class="glyphicon glyphicon-plus"></span></span>
+
+			                    	&nbsp;{{ data.consignee_company }}
+			                    </td>
+			                    <td class="">{{ data.consignee_name }}</td>
+
+			                    <td>
+			                    	<div style="width: 80px;">{{data.arrival_date}}</div>
+			                    </td>
+			                    <td>
+			                    	<span style="background-color: gray;color:white;padding:5px;">
+			                    		{{data.cleared_by_broker.broker.name}}
+			                    	</span>
+			                    </td>
+			                    <td>
+			                    	<div style="width:80px;">{{data.cleared_by_broker.handover_date}}</div>
+			                    </td>
+			                    <td>
+			                    	<div style="width:80px;">{{data.cleared_by_broker.released_date}}</div>
+			                    </td>
+			                    <!--TODO::POD_DATE-->
+			                    <td>
+			                    	<div style="width:80px;">{{data.cleared_by_broker.released_date}}</div>
+			                    </td>
+
+
+			                    <!--payable services-->
+			                    <!--BREAK-BULK-FEE-->
+			                    <td class="code1">
+			                    	<div style="width: 70px;" ng-repeat="brkBulk in data.payment_collections">
+			                    		<span ng-if="getPayableServiceCodeFromId(brkBulk.id) == 'BREAK-BULK-FEE'">
+			                    			{{brkBulk.created_date }}<br>
+			                    		</span>
+			                    	</div>
+			                    </td>
+			                    <td class="code1">
+			                    	<span style="width: 70px;" ng-repeat="brkBulk in data.payment_collections">
+			                    		<span ng-if="getPayableServiceCodeFromId(brkBulk.id) == 'BREAK-BULK-FEE'">
+			                    			{{brkBulk.paid_amount | number }}<br>
+			                    		</span>
+			                    	</span>
+			                    </td>
+			                    <td class="code1">
+			                    	<span style="width: 70px;" ng-repeat="brkBulk in data.payment_collections">
+			                    		<span ng-if="getPayableServiceCodeFromId(brkBulk.id) == 'BREAK-BULK-FEE'">
+			                    			{{brkBulk.receipt_no }}<br>
+			                    		</span>
+			                    	</span>
+			                    </td>
+
+			                     <!--STORAGE-FEE-->
+			                    <td class="code3">
+			                    	<div style="width: 70px;" ng-repeat="brkBulk in data.payment_collections">
+			                    		<span ng-if="getPayableServiceCodeFromId(brkBulk.id) == 'STORAGE'">
+			                    			{{brkBulk.created_date }}<br>
+			                    		</span>
+			                    	</div>
+			                    </td>
+			                    <td class="code3">
+			                    	<span style="width: 70px;" ng-repeat="brkBulk in data.payment_collections">
+			                    		<span ng-if="getPayableServiceCodeFromId(brkBulk.id) == 'STORAGE'">
+			                    			{{brkBulk.paid_amount | number }}<br>
+			                    		</span>
+			                    	</span>
+			                    </td>
+			                    <td class="code3">
+			                    	<span style="width: 70px;" ng-repeat="brkBulk in data.payment_collections">
+			                    		<span ng-if="getPayableServiceCodeFromId(brkBulk.id) == 'STORAGE'">
+			                    			{{brkBulk.receipt_no }}<br>
+			                    		</span>
+			                    	</span>
+			                    </td>
+
+			                    <!--KEBS-FEE-->
+			                    <td class="code2">
+			                    	<div style="width: 70px;" ng-repeat="brkBulk in data.payment_collections">
+			                    		<span ng-if="getPayableServiceCodeFromId(brkBulk.id) == 'KEBS'">
+			                    			{{brkBulk.created_date }}<br>
+			                    		</span>
+			                    	</div>
+			                    </td>
+			                    <td class="code2">
+			                    	<span style="width: 70px;" ng-repeat="brkBulk in data.payment_collections">
+			                    		<span ng-if="getPayableServiceCodeFromId(brkBulk.id) == 'KEBS'">
+			                    			{{brkBulk.paid_amount | number }}<br>
+			                    		</span>
+			                    	</span>
+			                    </td>
+			                    <td class="code2">
+			                    	<span style="width: 70px;" ng-repeat="brkBulk in data.payment_collections">
+			                    		<span ng-if="getPayableServiceCodeFromId(brkBulk.id) == 'KEBS'">
+			                    			{{brkBulk.receipt_no }}<br>
+			                    		</span>
+			                    	</span>
+			                    </td>
+
+
+			                    <td>{{data.cleared_by_broker.status}}</td>
+			                    <td>{{data.cleared_by_broker.comment}}</td>
+			                    <td>{{data.cleared_by_broker.remarks}}</td>
+			                    
+			                </tr>
+			            </tbody>
+			        </table>
+			    </div>
+
+
+
+			</div>
+			<!-- /listings -->
+
+		</div>
+
+	</div>
+	
+
+</div>
+
+

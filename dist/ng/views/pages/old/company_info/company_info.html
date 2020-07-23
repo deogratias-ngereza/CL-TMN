@@ -1,0 +1,884 @@
+<!-- listings -->
+<div>
+
+    <!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+    <!-- add new -->
+    <div ng-if="!IS_LOADING" class="row" style="margin-top: 10px;">
+        <div class="col-xs-6" align="left">
+            <!-- <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add company_info</button>
+            <button class="btn btn-default btn-sm" ng-click='reloadData()'>Reload</button>
+            <button class="btn btn-default btn-sm" ng-click='generateXLSData()'>Excel</button>-->
+            <table cellpadding="100px" cellspacing="100px">
+                <tr>
+                    <td ng-if="0" style="padding:0 5px 0 5px;"> <a ng-click='btnAdd()'> 
+                        <img class="img img-responsive" src="./dist/img/Plus.png"></a>
+                    </td>
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='reloadData()'> 
+                        <img class="img img-responsive" src="./dist/img/Repeat.png"></a>
+                    </td>
+                    <td ng-if="0" style="padding:0 5px 0 5px;"> <a ng-click='btnSearch()'> 
+                        <button class="btn btn-xs btn-primary">Search company_info</button></a>
+                    </td>
+                    <!--<td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("download")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Acrobat.png"></a></td>
+                    <td style="padding:0 5px 0 5px;" ><a ng-click='generateXLSData()'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Excel.png"></a></td>
+                    <td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("print")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/Printer.png"></a></td>-->
+                </tr>
+            </table>
+        </div>
+        <div class="col-xs-6" align="right">
+            <div>
+                <span class="loc_sticker"><b>COMPANY-INFO</b></span>
+                <span class="loc_sticker_pg"><b>PAGE</b></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- listing table -->
+    <div ng-if="!IS_LOADING" class="row" style="width:100%;margin-left:20px;overflow-y: scroll; height:100%;" >
+        
+        <table datatable="" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table-responsive row-border hover" border="0">
+            <thead>
+                <tr class="custom_dt_header">
+                    <th>OPTIONS</th>
+                    
+                    <th>ID</th>
+                    
+                    <th>NAME</th>
+                    
+                    <th>CODE</th>
+                    
+                    <th>EMAIL</th>
+                    
+                    <th>PHONE</th>
+                    
+                    <th>COUNTRY</th>
+                    
+                    <th>REGION</th>
+                    
+                    <th>ADDRESS1</th>
+                    
+                    <th>ADDRESS2</th>
+                    
+                    <th>POBOX</th>
+                    
+                    <th>PIN</th>
+                    
+                    <th>VRN</th>
+                    
+                    <th>LOGO_NAME</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="data in COMPANY_INFO_LIST">
+                    <td style="min-width: 80px;">
+                        <a ng-click="btnEdit(data)" class="pencil"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-if="0" ng-click="btnDelete(data)" class="trash"><span class="glyphicon glyphicon-trash"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-click="btnView(data)" class="eye"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    </td>
+                    
+                        
+                        
+                            
+                        <td class="g-tpl-id">{{ data.id }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.name }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.code }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.email }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.phone }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.country }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.region }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.address1 }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.address2 }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.pobox }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.pin }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.vrn }}</td>
+                            
+                        
+
+                    
+                        
+                        
+                            
+                        <td>{{ data.logo_name }}</td>
+                            
+                        
+
+                    
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- add new modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+            <!-- loading indicator-->
+            <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                <center>
+                    <div class="loader"> <i class="reloadMsg"></i> </div>
+                    <br>
+                    <i>{{ LOADING_MSG }}</i>
+                </center>
+            </div>
+
+            <div ng-if="!IS_LOADING" class="row main">
+                <div class="col-md-12" style="padding:30px;">
+                    <h3 class="g-tpl-title">Add company_info</h3><br>
+                    <form class="" method="post" action="#">
+
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                            
+                            <!--relation fields-->
+                            
+                            <!--/relation fields-->
+
+
+                            
+                    		<tr>
+                                <td width="30%">id</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.id" type="number" class="form-control input-normal" placeholder="Enter id" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">name</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.name" type="text" class="form-control input-normal" placeholder="Enter name" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">code</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.code" type="text" class="form-control input-normal" placeholder="Enter code" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">email</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.email" type="text" class="form-control input-normal" placeholder="Enter email" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">phone</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.phone" type="text" class="form-control input-normal" placeholder="Enter phone" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">country</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.country" type="text" class="form-control input-normal" placeholder="Enter country" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">region</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.region" type="text" class="form-control input-normal" placeholder="Enter region" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">address1</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.address1" type="text" class="form-control input-normal" placeholder="Enter address1" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">address2</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.address2" type="text" class="form-control input-normal" placeholder="Enter address2" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">pobox</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.pobox" type="text" class="form-control input-normal" placeholder="Enter pobox" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">pin</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.pin" type="text" class="form-control input-normal" placeholder="Enter pin" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">vrn</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.vrn" type="text" class="form-control input-normal" placeholder="Enter vrn" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">logo_name</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.logo_name" type="text" class="form-control input-normal" placeholder="Enter logo_name" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                        </table>
+
+                    </form>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="addNew()">Add</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /add new modal -->
+
+
+
+
+
+    <!-- update modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                 <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+                    <center>
+                        <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+                        <div class="loader"></div>
+                        <br>
+                        <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+                        <br><br><br>
+                        <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Update company_info</h3><br>
+                        <form class="" method="post" action="#">
+
+
+                            <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                                <!--relation fields-->
+                                
+                                <!--/relation fields-->
+                                
+
+	                        		<tr>
+		                                <td width="30%">id</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.id" type="number" class="form-control input-normal" placeholder="Enter id" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">name</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.name" type="text" class="form-control input-normal" placeholder="Enter name" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">code</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.code" type="text" class="form-control input-normal" placeholder="Enter code" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">email</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.email" type="text" class="form-control input-normal" placeholder="Enter email" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">phone</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.phone" type="text" class="form-control input-normal" placeholder="Enter phone" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">country</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.country" type="text" class="form-control input-normal" placeholder="Enter country" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">region</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.region" type="text" class="form-control input-normal" placeholder="Enter region" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">address1</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.address1" type="text" class="form-control input-normal" placeholder="Enter address1" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">address2</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.address2" type="text" class="form-control input-normal" placeholder="Enter address2" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">pobox</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.pobox" type="text" class="form-control input-normal" placeholder="Enter pobox" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">pin</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.pin" type="text" class="form-control input-normal" placeholder="Enter pin" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">vrn</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.vrn" type="text" class="form-control input-normal" placeholder="Enter vrn" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">logo_name</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.logo_name" type="text" class="form-control input-normal" placeholder="Enter logo_name" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="update()">Update</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /update modal -->
+
+    <!-- view modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <div ng-if="1" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">company_info</h3><br>
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                        	
+
+                        		<tr>
+	                                <td width="30%">id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">name</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.name }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">code</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.code }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">email</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.email }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">phone</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.phone }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">country</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.country }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">region</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.region }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">address1</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.address1 }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">address2</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.address2 }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">pobox</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.pobox }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">pin</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.pin }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">vrn</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.vrn }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">logo_name</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.logo_name }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+                        </table>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success g-tpl-success" data-dismiss="modal" ng-click="closeModal()">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /view modal -->
+
+    <!-- delete modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Delete a company_info</h3><br>
+                        Are you sure you want to delete a company_info?
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-danger g-tpl-danger" ng-click="delete()">Delete</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /delete modal -->
+
+
+      <!-- search modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i></i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Enter company_info</h3><br>
+                        <input type="text" ng-model="SEARCH_OBJ.search_key" class="form-control input-normal" placeholder="Enter company_info Here" name="">
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-warning g-tpl-warning" ng-click="deep_search_company_info()">Search Now</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /search modal -->
+
+
+
+
+</div>
+<!-- /listings -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

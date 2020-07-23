@@ -1,0 +1,223 @@
+.status_btn{
+  margin: 4px;
+}
+
+/*
+faris express color cords
+#25397C-blue,#F15B2B-orange
+
+
+#f37422
+*/
+
+
+.base_color{
+  background-color: gray;
+  color:white;
+}
+.g-tpl-id{
+  background-color:gray;
+  color:white;
+}
+.loc_sticker {
+  background-color: /*#25397C;*/#F06723;color:white;padding: 10px;
+}
+.loc_sticker_pg{
+  color:#49acd1;padding: 10px;
+}
+.g-tpl-title{
+  /*color:#348af9;*/
+  color:#25397C;
+}
+.g-tpl-success{
+}
+.g-tpl-default{
+}
+.g-tpl-danger{
+}
+.g-tpl-warning{
+}
+
+
+/*reload txt and reloading msg*/
+.reloadLoder{
+  text-decoration: none;
+  color:orange;
+}
+.reloadMsg{
+  color :gray;
+}
+/**/
+
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #222222; /*#3498db;  Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/*PACE*/
+.pace {
+  -webkit-pointer-events: none;
+  pointer-events: none;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.pace-inactive {
+  display: none;
+}
+
+.pace .pace-progress {
+  background: orange;/*#c19a3e;*/
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  right: 100%;
+  width: 100%;
+  height: 5px;
+}
+
+/*PACE*/
+
+
+
+/*DATE PICKER*/
+.datepicker.flat .picker .header {
+    background: /*#25397C;*/#118E90;
+}
+
+
+
+ 
+
+/*start nav*/
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    background-color: #118E90;/*#25397C;*/
+    border-color: #F15B2B;
+}
+
+.navbar-inverse .navbar-brand {
+    color: white;
+}
+
+.top-nav>li>a {
+    color: white;
+}
+
+
+/*end nav*/
+
+
+
+
+/* The sticky class is added to the navbar with JS when it reaches its scroll position */
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%
+}
+._sticky {
+  position: fixed;
+  top: 50px;
+  z-index: 1;
+  width: 100%
+}
+
+
+
+/*table header*/
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    color: white !important;
+    border: none;
+    background: gray;
+}
+.custom_dt_header{
+  background-color:#118E90;/* #25397C;*/
+  color : white;
+}
+.trash{
+  color: red;
+}
+.pencil{}
+.eye{
+  color: green;
+}
+
+/*printing*/
+@media print {
+    @page {
+      size: auto;
+      margin: 0;
+    }
+    #header {display:none;}
+    #content {display:none;}
+    #comments {display:none;}
+    #sidebar {display:none;}
+    #footer {display:none;}
+
+    .site-description {display:none;}
+    .site-title {display:none;}
+
+    input[type=text] {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #000000;
+    }
+    input[type=date] {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #000000;
+    }
+    input[type=number] {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #000000;
+    }
+    
+}
+
+
+
+
+
+.blink {
+  animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+
+
+.code1{
+      background-color: #e1f3f5;
+  }
+  .code2{
+      background-color: #b3e3cb;
+  }
+  .code3{
+      background-color: #e9d4fa;
+  }
+  .code4{
+      background-color: #f2eed5;
+  }

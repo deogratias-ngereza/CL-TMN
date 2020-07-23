@@ -1,0 +1,428 @@
+
+<div class="">
+
+    <div width="row">
+        <div class="col col-md-12">
+            <!-- listings -->
+            <div style="margin:0px;">
+
+               
+                <!-- add new -->
+                <div class="row" style="margin-top:30px;">
+                    <div class="col-xs-11" align="left">
+                        <!-- <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add branch</button>
+                        <button class="btn btn-default btn-sm" ng-click='reloadData()'>Reload</button>
+                        <button class="btn btn-default btn-sm" ng-click='generateXLSData()'>Excel</button>-->
+                        <table cellpadding="100px" cellspacing="100px">
+                            <tr>
+                                <td style="padding:0 5px 0 5px;"> <a ng-click='reloadData()'> 
+                                    <img class="img img-responsive" src="./dist/img/Repeat.png"></a>
+                                </td>
+                                <td ng-if="0" style="padding:0 5px 0 5px;"> <a ng-click='btnSearch()'> 
+                                    <button class="btn btn-xs btn-primary">Search branch</button></a>
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="SEARCH_OBJ.search_key" name="">
+                                </td>
+                                <td>
+                                    &nbsp;S:&nbsp;
+                                    <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.start_date"/>
+                                </td>
+                                <td>
+                                    &nbsp;E:&nbsp;
+                                    <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.end_date"/>
+                                </td>
+
+                                <td>&nbsp;
+                                    <button class="btn btn-default btn-xs" ng-click="get_shipments_tabulations()">Filter Payment List</button>
+                                </td>
+
+                               
+                            </tr>
+                        </table>
+                        <br>
+                    </div>
+                    <div class="col-xs-1" align="right">
+                        <div>
+                            <span class="loc_sticker"><span class="badge">{{SHIPMENTS.length}}</span>&nbsp;</span>
+                            <!--<span class="loc_sticker_pg"><b>PAGE</b></span>-->
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <table>
+                        <tr>
+                            
+                             <td>&nbsp;Vendor:&nbsp;
+                                <select ng-options="opt.id as opt.name for opt in VENDORS_LIST" ng-model="SEARCH_OBJ.client_id"></select>
+                                &nbsp&nbsp&nbsp
+                            </td>
+
+                            <td>&nbsp;Value:&nbsp;
+                                <select ng-options="opt as opt for opt in ['HV','LV','ND','ALL']" ng-model="SEARCH_OBJ.lh_value"></select>
+                                &nbsp&nbsp&nbsp
+                            </td>
+
+                            <td>&nbsp;Bill:&nbsp;
+                                <select ng-options="opt as opt for opt in ['S','C','N','A']" ng-model="SEARCH_OBJ.bill_to"></select>
+                                &nbsp&nbsp&nbsp
+                            </td>
+                            <td>&nbsp;
+                                <a target="_blank" class="btn btn-default btn-xs" onclick="selectElementContents( document.getElementById('dtTable') );">
+                                    <span class="glyphicon glyphicon-file" style="color:green;"></span>&nbsp;
+                                Copy to Excel</a>
+                            </td>
+
+                            
+                        </tr>
+                    </table>
+                </div>
+
+
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+                    <center>
+                        <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+                        <div class="loader"></div>
+                        <br>
+                        <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+                        <br><br><br>
+                        <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+                    </center>
+                </div>
+
+
+                <!-- listing table -->
+                <div ng-if="!IS_LOADING" class="table-responsive">
+                    <table id="dtTable" class="table table-stripped">
+                        <thead class="custom_dt_header">
+                            <tr> 
+                                <td><span><i>i</i></span></td>
+                                <td>DATE</td>
+                                <td>SERVICE</td>
+                                <td>PAY</td>
+                                <td>STATUS</td>
+                                <td>APRROVED</td>
+                                <td>AWB-NO</td>
+                                <td>CONSIGNEE</td>
+                                <td>ENTRY-NO</td>
+                                <td>TOTAL</td>
+                                <td>DUTY</td>
+                                <td>E.DUTY</td>
+                                <td>VAT</td>
+                                <td>IDF</td>
+                                <td>E.IDF</td>
+                                <td>RDL</td>
+                                <td>KAA</td>
+                                <td>CONCESSION</td>
+                                <td>RATE</td>
+
+                            </tr>
+                        </thead>
+                        <tbody style="color: gray;font-size: 0.9em;">
+                            <tr ng-repeat="data in SHIPMENTS">
+                            	<td><span><i>{{$index + 1}}</i></span></td>
+                            	<td><div style="width: 90px;">{{data.created_date}}</div></td>
+                            	<td>
+                            		<span style="color:gray;font-size: 0.6em;">{{data.service.code}}</span>
+                            	</td>
+
+                                <td>
+                                    <button ng-if="data.status != 'SET' && data.status != 'PAID'" ng-click="markAsPaid($index,data)" class="btn btn-default btn-xs">Pay Now</button>
+                                    
+                                </td>
+                                <td>
+                                    <span ng-if="data.status == 'SET' || data.status == 'PAID'" style="{{getTabulationStatusStyle(data.status)}}">SET</span>
+                                </td>
+                                <td>
+                                    <button ng-click="aprroveNow($index,data)" class="btn btn-default btn-xs">Approve</button>
+                                </td>
+                            	
+                                <td>{{data.awb_no}}</td>
+                                <td>{{data.consignee}}</td>
+                                <td>{{data.entry_no}}</td>
+                                <td>
+                                	<span style="color:white;background-color: gray;padding:5px;">{{data.total | number }}</span>
+                                </td>
+                                <td>{{data.duty | number }}</td>
+                                <td>{{data.exe_duty | number }}</td>
+                                <td>{{data.vat | number }}</td>
+                                <td>{{data.idf | number }}</td>
+                                <td>{{data.extra_idf | number }}</td>
+                                <td>{{data.rdl | number }}</td>
+                                <td>{{data.kaa | number }}</td>
+                                <td>{{data.concession | number }}</td>
+                                <td>{{data.exchange_rate | number }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </div>
+            <!-- /listings -->
+
+        </div>
+        <!--/detection view -->
+
+    </div>
+    
+
+</div>
+
+
+
+
+
+
+<!---MODALS--->
+<!-- notifycustomerEmailModal -->
+ <div class="modal fade" id="notifycustomerEmailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+            <div class="row main">
+                <div class="col-md-12" style="padding:30px;">
+                    <h3 class="g-tpl-title">Send Email to {{PICKED_SHIPMENT.consignee_name}} </h3><br>
+                    <form class="" method="post" action="#">
+
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                            
+                            
+                            <tr>
+                                <td width="30%">AWB</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                        <span style="color:gray;">{{PICKED_SHIPMENT.awb_no}}</span>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="30%">customer</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="PICKED_SHIPMENT.customer_onemail_thread" type="text" class="form-control input-normal" placeholder="Enter email receiver" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="30%">Email-Thread</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                        <span style="color:gray;">PACKAGE TRACKING NUMBER : {{PICKED_SHIPMENT.awb_no}}</span>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td width="30%">customer-email</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="PICKED_SHIPMENT.communication_email" type="text" class="form-control input-normal" placeholder="Email (customer)" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td style="font-style: italic;color:gray;">
+                                    <span>cc:</span>
+                                    <span>{{CURRENT_USER.email}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="sendNotificationEmail()"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Send Email</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- entryUpdateForm modal -->
+    <div class="modal fade" id="entryUpdateForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Update Entry For: <span style="color:gray;">{{PICKED_OBJ.awb_no}}</span></h3><br>
+                        
+                        <table width="100%">
+                            <tr>
+                                <td>ENTRY NO:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.tabulation.entry_no" type="text" class="form-control input-normal" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>STATUS:</td>
+                                <td>
+                                    <select ng-options="opt for opt in ['REGISTERED','ISSUE','PENDING','APPROVED']" ng-model="PICKED_OBJ.tabulation.entry_status" class="form-control input-normal"></select>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>DESCRIPTION:</td>
+                                <td>
+                                    <textarea ng-model="PICKED_OBJ.tabulation.entry_description" class="form-control input-normal"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="PICKED_OBJ.tabulation.entry_status != '' && PICKED_OBJ.tabulation.entry_status != null" type="button" class="btn btn-success g-tpl-success" ng-click="updateEntryInfo()">Update Entry Details</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /entryUpdateForm modal -->
+
+    
+    <!-- dutyAndTaxPaymentForm modal -->
+    <div class="modal fade" id="dutyAndTaxPaymentForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Entry No : <span style="color:gray;">{{PICKED_OBJ.tabulation.entry_no }}</span></h3><br>
+                        
+                        <table width="100%">
+                            <tr>
+                                <td>ENTRY NO:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.entry_no" type="text" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>AWB NO:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.awb_no" type="text" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>DUTY:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.duty" type="number" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>EXERCISE DUTY:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.exe_duty" type="number" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>VAT:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.vat" type="number" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>IDF:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.idf" type="number" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>EXTRA-IDF:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.extra_idf" type="number" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>RDL:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.rdl" type="number" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>KAA:</td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.kaa" type="number" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>TOTAL</b></td>
+                                <td>
+                                    <input ng-model="PICKED_OBJ.dnt_payment.total" type="number" class="form-control input-normal" style="width:250px;" name=""><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>CURRENCY</span>&nbsp;
+                                    <input type="text" placeholder="currency" ng-model="PICKED_OBJ.dnt_payment.currency" class="form-control input-normal" style="width:150px;" name="">
+                                </td>
+                                <td>
+                                    <span>FX-RATE</span>&nbsp;
+                                    <input ng-model="PICKED_OBJ.dnt_payment.exchange_rate" type="number" class="form-control input-normal" style="width:150px;" name=""><br>
+                                </td>
+                            </tr>
+                            
+                        </table>
+
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success g-tpl-success" ng-click="addDutyAndTaxPayment()">SET DUTY & TAXES FOR PAYMENTS</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /dutyAndTaxPaymentForm modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

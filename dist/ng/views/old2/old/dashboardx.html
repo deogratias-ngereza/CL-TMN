@@ -1,0 +1,102 @@
+
+<style type="text/css">
+.rContent{
+	margin-left: 0px;
+	margin-top:10px;
+	background-color: #f0f2f2;color:white;
+}
+.innerContentList{
+	colo:gray;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+.rLink{
+	color: gray;
+	font-weight: bold;
+	:hover:background-color:red;
+}
+.catMenu{
+	background-color: white;border: 1px solid gray;padding:3px;color:gray;width:300px;
+}
+.catMenu:hover{
+	background-color: gray;color:white;
+}
+.activeMenu{
+	background-color: gray;color:white;
+}
+.vendorType{
+	background-color: white;border: 1px solid green;padding:3px;color:gray;width:300px;
+	border-radius: 5px;
+}
+</style>
+
+
+
+<div class="panel panel-default" style="margin:30px;margin-top: 90px;">
+  	<div class="panel-heading" style="background-color: gray;color:white;">Report Viewer</div>
+  	<div class="panel-body">
+    	<div class="row">
+			<div class="col col-md-4">
+
+
+				<div class="xcatMenu {{cat.active == 1? 'xactiveMenu':'x'}}">
+					<div ng-repeat="cat in CATEGORIES" class="{{cat.active == 1? 'activeMenu':'x'}}">
+						<div ng-click="onCatClicked($index,cat)">
+							<span class="glyphicon glyphicon-list-alt"></span> &nbsp;&nbsp;&nbsp;
+							{{cat.name}}
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="col col-md-8">
+
+				<div>
+					<div>
+						<span style="font-weight: bold;color:gray;">{{SELECTED_CATEGORY}}</span>
+						&nbsp;&nbsp;
+						From:&nbsp;&nbsp;
+						<input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="FILTER_OPTION.start_date"/>
+						To:&nbsp;&nbsp;
+						<input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="FILTER_OPTION.end_date"/>
+					</div>
+					<br>
+					<span ng-repeat="vend in VENDORS_LIST" ng-click="filterVendor(vend)">
+						<span class="badge" >
+							{{vend.name}}
+						</span>
+						&nbsp;
+
+					</span>
+
+					<right>
+						<input type="text" ng-model="searchVendor" name="">
+					</right>
+				</div>
+
+				<div class="rContent" ng-repeat="data in VENDORS_LIST | filter : searchVendor">
+					<div class="vendorType" style="">
+						<span class="glyphicon glyphicon-list-alt"></span> &nbsp;&nbsp;&nbsp;
+						<b>{{data.name}}</b>
+					</div>
+
+					<div class="innerContentList">
+						<div ng-repeat="mdata in MENU_CODED_LIST">
+							<a ui-sref="app.shipment_filter({vendor_id:data.id,category:SELECTED_CATEGORY,code:mdata.code,start_date:FILTER_OPTION.start_date,end_date:FILTER_OPTION.end_date})" class="rLink">
+								<span class="glyphicon glyphicon-arrow-right"></span>
+								&nbsp;&nbsp;&nbsp;
+								<span>{{mdata.name}}</span>
+							</a>
+						</div>
+						<!--ui-sref="shipment_filter({vendor_id:data.id,category:SELECTED_CATEGORY,code:data.code,start_date:TODAYS_DATE,end_date:TODAYS_DATE})"-->
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+  	</div>
+</div>
+
+
+

@@ -1,0 +1,351 @@
+<!-- listings -->
+<div ng-controller="ListController as showCase">
+    <!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <img src="./dist/img/loaders/loader_1.gif" class="img-responsive"><br>
+            <i>{{ LOADING_MSG }}</i>
+        </center>
+    </div>
+    <!-- add new -->
+    <div ng-if="!IS_LOADING" class="row" style="margin-top: 10px;">
+        <div class="col-sm-12" align="left">
+            <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add New</button>
+        </div>
+    </div>
+
+    <!-- listing table -->
+    <div ng-if="!IS_LOADING" class="row" style="width:100%;margin-left:20px;">
+        
+        <table datatable="" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" class="table-responsive row-border hover" border="0">
+            <thead>
+                <tr>
+                    <th>Options</th>
+                    <th>other</th>
+                    <th>More</th>
+                    <th>io</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        <a ng-click="btnEdit({})"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-click="btnDelete({})" class="trash"><span class="glyphicon glyphicon-trash"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-click="btnView({})" class="flag"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    </td>
+                    <td>other</td>
+                    <td>Master</td>
+                    <td>io</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- add new modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+
+            <!--
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>-->
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <img src="./dist/img/loaders/loader_1.gif" class="img-responsive"><br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="1" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3>Add</h3><br>
+                        <form class="" method="post" action="#">
+
+
+                            <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                                <tr>
+                                    <td width="30%">Name</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-normal" name="purpose_name" id="purpose_name" placeholder="Enter your Purpose Name" style="width:250px;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="30%">Name</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-normal" name="purpose_name" id="purpose_name" placeholder="Enter your Purpose Name" style="width:250px;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success">Add</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /add new modal -->
+
+    <!-- update modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="0" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <img src="./dist/img/loaders/loader_1.gif" class="img-responsive"><br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="1" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3>Update</h3><br>
+                        <form class="" method="post" action="#">
+
+
+                            <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                                <tr>
+                                    <td width="30%">Name</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-normal" name="purpose_name" id="purpose_name" placeholder="Enter your Purpose Name" style="width:250px;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="30%">Name</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-normal" name="purpose_name" id="purpose_name" placeholder="Enter your Purpose Name" style="width:250px;" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success">Update</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /update modal -->
+
+    <!-- view modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <img src="./dist/img/loaders/loader_1.gif" class="img-responsive"><br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="1" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3>View</h3><br>
+                        <form class="" method="post" action="#">
+
+
+                            <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                                <tr>
+                                    <td width="30%">Name</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <h3>Data Here</h3>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="30%">Name</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <h3>Data Here</h3>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success">Update</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /view modal -->
+
+    <!-- delete modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <img src="./dist/img/loaders/loader_1.gif" class="img-responsive"><br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="1" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3>Delete</h3><br>
+                        Are you sure you want to delete?
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-danger">Update</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /delete modal -->
+
+
+
+
+</div>
+<!-- /listings -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<div class="row" style="width:100%;">
+    <div class="col-md-12">
+
+        <h3><span class="glyphicon glyphicon-th-list"></span> List of customer Applied for Loans</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Page</th>
+                        <th>Visits</th>
+                        <th>% New Visits</th>
+                        <th>Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>/index.html</td>
+                        <td>1265</td>
+                        <td>32.3%</td>
+                        <td>$321.33</td>
+                    </tr>
+                    <tr>
+                        <td>/about.html</td>
+                        <td>261</td>
+                        <td>33.3%</td>
+                        <td>$234.12</td>
+                    </tr>
+                    <tr>
+                        <td>/sales.html</td>
+                        <td>665</td>
+                        <td>21.3%</td>
+                        <td>$16.34</td>
+                    </tr>
+                    <tr>
+                        <td>/blog.html</td>
+                        <td>9516</td>
+                        <td>89.3%</td>
+                        <td>$1644.43</td>
+                    </tr>
+                    <tr>
+                        <td>/404.html</td>
+                        <td>23</td>
+                        <td>34.3%</td>
+                        <td>$23.52</td>
+                    </tr>
+                    <tr>
+                        <td>/services.html</td>
+                        <td>421</td>
+                        <td>60.3%</td>
+                        <td>$724.32</td>
+                    </tr>
+                    <tr>
+                        <td>/blog/post.html</td>
+                        <td>1233</td>
+                        <td>93.2%</td>
+                        <td>$126.34</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>-->

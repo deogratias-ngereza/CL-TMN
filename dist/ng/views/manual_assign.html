@@ -1,0 +1,135 @@
+<!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div> 
+
+
+<div ng-if="!IS_LOADING">
+	
+
+	<div class="row" style="margin:30px;margin-top: 90px;">
+		
+		<div class="col-xs-6" align="left">
+			<button ng-click="addNewAWB()" class="btn btn-default btn-xs">New AWB</button>
+			
+		</div>
+		<div class="col-xs-6" align="right">
+            <button ng-click="clearData()" class="btn btn-default btn-xs">Clear all</button>
+			<!--<input type="text" ng-model="SHEET_NO" placeholder="sheet_no" name="">-->
+			<button ng-click="openAssignWorkerModal()" class="btn btn-sm btn-success">ASSIGN SHIPMENTS</button>
+		</div>
+
+	</div>
+
+	<div class="panel panel-success" style="margin: 30px;">
+      <!--<div class="panel-heading">
+      	<button class="btn btn-xs btn-danger">-</button>&nbsp&nbsp&nbsp
+      	<b>Waybill POD Details</b>
+      </div>-->
+      <div class="panel-body">
+
+        
+
+          <table class="table table-responsive">
+            
+            <tr ng-repeat="data in AWB_LIST">
+            	<td>
+            		<button ng-click="removeAWB($index)" class="btn btn-xs btn-danger">-</button>&nbsp;&nbsp;&nbsp;
+            	</td>
+            	<td>
+            		<input ng-model="data.awb_no" type="text" placeholder="AWB #" name="">
+                    &nbsp;&nbsp;&nbsp;
+                    <span ng-click="setAwbInfo($index)" class="btn btn-default btn-xs">check</span>
+            	</td>
+
+            	<td ng-if="0">  
+            		<div style="width: 120px;">&nbsp;&nbsp;
+            		<span ng-if="data.customer_set" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;border:2px solid green;color:green">CUST.SET</span>
+            		<span ng-if="!data.customer_set" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;color:red;border:2px solid red;">CUST.NOT SET</span></div>
+            	</td>
+
+            	<td>
+            		<span ng-if="data.assigned_cs != -1 && data.assigned_cs != undefined && data.assigned_cs != null" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;border:2px solid green;color:green">CS-ASSIGNED</span>
+            		<span ng-if="data.assigned_cs == -1" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;color:red;border:2px solid red;">CS-NOT-ASSIGNED</span></div>
+            	</td>
+            	<td>
+            		<span ng-if="data.held_at_customs != null" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;border:2px solid green;color:green">HELD</span>
+            		<span ng-if="data.held_at_customs == null" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;color:red;border:2px solid red;">NOT-HELD</span></div>
+            	</td>
+
+                <td>
+                    &nbsp;&nbsp;&nbsp;
+                    <span style="color:gray">{{data.info}}</span>
+                </td>
+            	
+            </tr>
+          </table>
+      </div>
+    </div>
+
+</div>
+
+
+
+
+
+<!-- assign to worker modal -->
+    <div class="modal fade" id="assignWorkerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i>{{LOADING_MSG}}</i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Assign to <span style="color:orange;">{{ CURRENT_SELECTED_WORKER.username }}</span></h3><br>
+
+                        <input type="text" ng-model="SEARCH_OBJ.search_worker" class="form-control input-normal" placeholder="Search worker here" name=""><br>
+
+                        <div style="height: 300px;overflow: auto;">
+                            <table class="table">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Unit</td>
+                                    <td>Option</td>
+                                </tr>
+                                <tr ng-repeat="worker in CS_LIST | filter : SEARCH_OBJ.search_worker" style="overflow-y: auto;max-height: 10px;">
+                                    <td><b>{{ worker.username }}</b></td>
+                                    <td>
+                                    	<span style="background-color: {{worker.unit_info.color}};color:white;padding:5px;">
+                                    		{{worker.unit_info.name}}
+                                    	</span>
+                                    </td>
+                                    <td>
+                                        <span class="btn btn-success btn-xs" ng-click="prepareThisWorker2BeAssigned(worker)">Pick</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="CURRENT_SELECTED_WORKER != undefined" type="button" class="btn btn-warning g-tpl-warning" ng-click="upload()">Confirm Assignment</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /assign to worker modal -->

@@ -1,0 +1,682 @@
+<br>
+<!-- listings -->
+<div>
+
+    <!-- loading indicator-->
+    <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+        <center>
+            <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+            <div class="loader"></div>
+            <br>
+            <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+            <br><br><br>
+            <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+        </center>
+    </div>
+
+    <!-- add new -->
+    <div ng-if="!IS_LOADING" class="row" style="margin-top: 10px;">
+        <div class="col-xs-8" align="left">
+            <!-- <button class="btn btn-success btn-sm" ng-click='btnAdd()'>Add payment_collection</button>
+            <button class="btn btn-default btn-sm" ng-click='reloadData()'>Reload</button>
+            <button class="btn btn-default btn-sm" ng-click='generateXLSData()'>Excel</button>-->
+            <table cellpadding="100px" cellspacing="100px">
+                <tr>
+                    <td ng-if="0" style="padding:0 5px 0 5px;"> <a ng-click='btnAdd()'> 
+                        <img class="img img-responsive" src="./dist/img/Plus.png"></a>
+                    </td>
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='reloadData()'> 
+                        <img class="img img-responsive" src="./dist/img/Repeat.png"></a>
+                    </td>
+                    <td>
+                        &nbsp;S:&nbsp;
+                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.start_date"/>
+                    </td>
+                    <td>
+                        &nbsp;E:&nbsp;
+                        <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="SEARCH_OBJ.end_date"/>
+                    </td>
+                    
+
+                    <td>&nbsp;
+                        <a target="_blank" class="btn btn-default btn-xs" onclick="selectElementContents( document.getElementById('dtTable') );">
+                            <span class="glyphicon glyphicon-file" style="color:green;"></span>&nbsp;
+                        Copy to Excel</a>
+                    </td>
+
+                    <!--
+                    <td style="padding:0 5px 0 5px;"> <a ng-click='btnSearch()'> 
+                        <button class="btn btn-xs btn-primary">Search payment_collection</button></a>
+                    </td>-->
+                    <!--<td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("download")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Acrobat.png"></a></td>
+                    <td style="padding:0 5px 0 5px;" ><a ng-click='generateXLSData()'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/File-Excel.png"></a></td>
+                    <td style="padding:0 5px 0 5px;"><a ng-click='generatePDF("print")'> 
+                        <img class="img img-responsive img-circle" src="./dist/img/Printer.png"></a></td>-->
+                </tr>
+            </table>
+            <br>
+            <table>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;
+                        <input type="text" ng-model="SEARCH_OBJ.search_key" placeholder="key" name="">&nbsp;&nbsp;
+                    </td>
+                    <td>OPTION:
+                        <select ng-options="opt for opt in ['UPDATED_DATE','CREATED_DATE','CONFIRMED_DATE','AWB']" ng-model="SEARCH_OBJ.filter_by"></select>
+                    </td>
+                    <td>STATUS:
+                        <select ng-options="opt for opt in ['PAID','PENDING','ISSUE','CANCELLED','ALL']" ng-model="SEARCH_OBJ.status"></select>
+                    </td>
+                    <td>BRANCH:
+                        <select ng-options="opt.id as opt.name for opt in BRANCHES" ng-model="SEARCH_OBJ.branch_id"></select>
+                    </td>
+
+                    <td>&nbsp;
+                        <a class="btn btn-default btn-xs" ng-click="filter_collections()">Filter Collections</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-xs-4" align="right">
+            <div>
+                <span class="loc_sticker"><b>P.COLLECTIONS</b></span>
+                <span class="loc_sticker_pg"><b>PAGE</b></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- listing table -->
+    <div ng-if="!IS_LOADING" class="row table-responsive" style="width:100%;margin-left:20px;overflow-y: scroll; height:100%;" >
+        
+        <table id="dtTable"  class="table table-responsive row-border hover" border="0">
+            <thead>
+                <tr class="custom_dt_header">
+                    <th ng-if="0">OPTIONS</th>
+                    
+                    <th>ID</th>
+                    <th>CAT</th>
+                    <th>DATE</th>
+                    <th>STATUS</th>
+                    <th>ACTION</th>
+                    <th>AWB</th>
+                    <th>CONS.COMPANY/NAME</th>
+                    <th>PAYABLE_NAME</th>
+                    <th>SERVICE</th>
+                    <th>PAID_AMOUNT</th>
+                     <th>MODE</th>
+                    
+                    <th>RECEIPT_NO</th>
+                    <th>REF</th>
+                    <th>COMMENT</th>
+                    <th>CONF.DATE</th>
+
+                    <th>BATCH_NO</th>
+                    <th>CURRENCY</th>
+                    
+                    <th>CREATOR</th>
+
+
+                    <th>WEIGHT</th>
+                    <th>CUSTOMS</th>
+                    <th>CURRENCY</th>
+                    <th>USD-VALUE</th>
+
+                    
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="data in PAYMENT_COLLECTIONS_LIST | filter : SEARCH_OBJ.search_key">
+                    <td ng-if="0" style="min-width: 10px;">
+                        <a ng-if="0" ng-click="btnEdit(data)" class="pencil"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-if="0" ng-click="btnDelete(data)" class="trash"><span class="glyphicon glyphicon-trash"></span></a>&nbsp&nbsp&nbsp
+                        <a ng-if="0" ng-click="btnView(data)" class="eye"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    </td>
+                    
+                        
+                        
+                            
+                        <td class="g-tpl-id">{{ data.id }}</td>
+                        <td class="g-tpl-id">{{ data.category }}</td>
+                        <td class="code1">
+                        	<div style="width: 80px;color:gray;">
+                        		{{ data.created_date }}
+                        	</div>
+                        </td>
+                        <td class="code1">
+                            <div ng-if="data.status == 'PENDING'" class="blink" style="{{getStatusStyle(data.status)}}">{{data.status}}</div>
+                            <div ng-if="data.status != 'PENDING'" style="{{getStatusStyle(data.status)}}">{{data.status}}</div>
+                        </td> 
+
+                        <td>
+                            <button ng-click="openChangeStatusModal($index,data)" class="btn btn-default btn-xs">change-status</button>
+                        </td>
+                        <td class="code1"><b>{{ data.shipment.awb_no }}</b></td> 
+
+
+
+                        <td class="code1">
+                        	<div style="font-weight: 0.7em;color:gray;">
+                        		{{ data.shipment.consignee_company }}/{{ data.shipment.consignee_name }}
+                        	</div>
+                        </td>  
+                        <td class="code1">{{ data.customer_name }}</td>
+                            
+                        <td class="code1" style="background-color: {{data.payable_service.color}};">
+                        	{{data.payable_service.name}}
+                        </td>
+                            
+                        <td class="code1"><b>{{ data.paid_amount | number}}</b></td>
+                        <td class="code1">{{ data.payment_mode.name }}</td>
+                            
+                        
+                            
+                        <td class="code1">{{ data.receipt_no }}</td>
+                        <td class="code1">{{ data.payment_ref }}</td>
+                        <td class="code1">{{ data.comment }}</td>
+                        <td class="code1">{{ data.confirmed_date }}</td>
+                         <td class="code1">{{ data.batch_no }}</td>   
+                        
+                            
+                        <td>{{ data.currency }}</td>
+                            
+                            
+                        <td>{{ data.creator.username }}</td>
+                            
+                        <td>{{ data.shipment.weight }}{{ data.shipment.uom }}</td> 
+                        <td>{{ data.shipment.customs_value }}</td>
+                        <td>{{ data.shipment.currency }}</td>
+                        <td>{{ data.shipment.customs_value_in_usd }}</td>
+
+                    
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- add new modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+            <!-- loading indicator-->
+            <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                <center>
+                    <div class="loader"> <i class="reloadMsg"></i> </div>
+                    <br>
+                    <i>{{ LOADING_MSG }}</i>
+                </center>
+            </div>
+
+            <div ng-if="!IS_LOADING" class="row main">
+                <div class="col-md-12" style="padding:30px;">
+                    <h3 class="g-tpl-title">Add payment_collection</h3><br>
+                    <form class="" method="post" action="#">
+
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                            
+                           
+                        	
+                    		<tr>
+                                <td width="30%">customer_name</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.customer_name" type="text" class="form-control input-normal" placeholder="Enter customer_name" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">paid_amount</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.paid_amount" type="number" class="form-control input-normal" placeholder="Enter paid_amount" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">receipt_no</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.receipt_no" type="text" class="form-control input-normal" placeholder="Enter receipt_no" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">currency</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.currency" type="text" class="form-control input-normal" placeholder="Enter currency" style="width:250px;" />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                    		<tr>
+                                <td width="30%">creator_id</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input ng-model="NEW_OBJ.creator_id" type="number" class="form-control input-normal" placeholder="Enter creator_id" style="width:250px;" disabled />
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        	
+                        </table>
+
+                    </form>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="addNew()">Add</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /add new modal -->
+
+
+
+
+
+    <!-- update modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                 <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 100px;">
+                    <center>
+                        <!--<img src="./dist/img/loaders/loader_1.gif" class="img-responsive">-->
+                        <div class="loader"></div>
+                        <br>
+                        <i class="reloadMsg">{{ LOADING_MSG }}</i> 
+                        <br><br><br>
+                        <a ng-click="reloadData()" style="text-decoration:none;"><span class="reloadLoder">Reload</span> </a>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Update payment_collection</h3><br>
+                        <form class="" method="post" action="#">
+
+
+                            <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                               
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">customer_name</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.customer_name" type="text" class="form-control input-normal" placeholder="Enter customer_name" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">paid_amount</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.paid_amount" type="number" class="form-control input-normal" placeholder="Enter paid_amount" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">receipt_no</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.receipt_no" type="text" class="form-control input-normal" placeholder="Enter receipt_no" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">currency</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.currency" type="text" class="form-control input-normal" placeholder="Enter currency" style="width:250px;" />
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+
+	                        		<tr>
+		                                <td width="30%">creator_id</td>
+		                                <td>
+                                        
+                                            <div class="input-group">
+                                            <input ng-model="EDITABLE_OBJ.creator_id" type="number" class="form-control input-normal" placeholder="Enter creator_id" style="width:250px;" disabled/>
+                                            </div>
+                                        
+		                                </td>
+		                            </tr>
+	                        	
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="update()">Update</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /update modal -->
+
+    <!-- view modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <div ng-if="1" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">payment_collection</h3><br>
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                        	
+
+                        		<tr>
+	                                <td width="30%">id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">customer_name</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.customer_name }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">paid_amount</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.paid_amount }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">receipt_no</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.receipt_no }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">currency</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.currency }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+
+                        		<tr>
+	                                <td width="30%">creator_id</td>
+	                                <td>
+	                                    <div class="input-group">
+                                        
+                                            <span><b>{{ PICKED_OBJ.creator_id }}</b></span>
+                                        
+	                                    </div>
+	                                </td>
+	                            </tr>
+                        	
+                        </table>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success g-tpl-success" data-dismiss="modal" ng-click="closeModal()">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /view modal -->
+
+    <!-- delete modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i>{{ LOADING_MSG }}</i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Delete a payment_collection</h3><br>
+                        Are you sure you want to delete a payment_collection?
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-danger g-tpl-danger" ng-click="delete()">Delete</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /delete modal -->
+
+
+      <!-- search modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+                <!-- loading indicator-->
+                <div ng-if="IS_LOADING" class="row" style="margin-top: 20px;margin-bottom: 20px;">
+                    <center>
+                        <div class="loader"></div>
+                        <br>
+                        <i></i>
+                    </center>
+                </div>
+
+                <div ng-if="!IS_LOADING" class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Enter payment_collection</h3><br>
+                        <input type="text" ng-model="SEARCH_OBJ.search_key" class="form-control input-normal" placeholder="Enter payment_collection Here" name="">
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-warning g-tpl-warning" ng-click="deep_search_payment_collection()">Search Now</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /search modal -->
+
+
+
+
+
+     <!-- changeStatusModal modal -->
+    <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+
+
+                <div class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Update Information({{PICKED_OBJ.shipment.awb_no}})</h3><br>
+                        <table border="0" style="width:100%;border-spacing:0.4em;" align="center">
+                           
+                            <tr>
+                                <td width="30%">status</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <select ng-options="opt as opt for opt in ['PAID','PENDING','ISSUE','CANCELLED']" ng-model="PAYMENT_STATUS_OBJ.status" class="form-control input-normal" style="width:250px;"></select>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="30%">CONFIRMED-AMOUNT</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <input type="text" ng-model="PAYMENT_STATUS_OBJ.confirmed_amount" class="form-control input-normal" placeholder="Enter actual amount" name="">
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="30%">REF</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <textarea ng-model="PAYMENT_STATUS_OBJ.payment_ref" class="form-control input-normal"></textarea>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="30%">comment</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <textarea ng-model="PAYMENT_STATUS_OBJ.comment" class="form-control input-normal"></textarea>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="30%">description</td>
+                                <td>
+                                
+                                    <div class="input-group">
+                                    <textarea ng-model="PAYMENT_STATUS_OBJ.description" class="form-control input-normal"></textarea>
+                                    </div>
+                                
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-if="1" type="button" class="btn btn-success g-tpl-success" ng-click="applyPaymentStatus(PICKED_OBJ.index_id)">MARK AS {{PAYMENT_STATUS_OBJ.status}}</button>
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /changeStatusModal modal -->
+
+</div>
+<!-- /listings -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

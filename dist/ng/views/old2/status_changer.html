@@ -1,0 +1,107 @@
+<div class="container" style="margin-top:80px;">
+	
+
+
+	<div class="row">
+		<div class="panel panel-default">
+		  	<div class="panel-heading">Set Broker Name</div>
+		  	<div class="panel-body">
+		    	
+		    	Broker : <input type="text" ng-model="FILTER_DATA.selected_broker.name" ng-change="openSearchBrokerModal()" ng-click="openSearchBrokerModal()" name="">
+
+		    	<br><br>
+		    	<button ng-if="FILTER_DATA.selected_broker != undefined" class="btn btn-success btn-xs">SET BROKER</button>
+		  	</div>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="panel panel-default">
+		  	<div class="panel-heading">Document Collection</div>
+		  	<div class="panel-body">
+		  		Collected-By : 
+		  		<select ng-options="opt as opt for opt in ['BROKER','INDIVIDUAL']" ng-model="FILTER_DATA.collection_category"></select>
+		  		<br><br>
+
+		  		Collector Name : <input ng-model="FILTER_DATA.collector_name" type="text" placeholder="collector name" name=""><br><br>
+		    	Collected Date : <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="FILTER_DATA.doc_collection_date"/>
+		    	<br>
+
+		    	<br>
+		    	<button ng-if="FILTER_DATA.collector_name != ''" ng-click="confirmCollection()" class="btn btn-success btn-xs">Confirm Collection</button>
+		  	</div>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="panel panel-default">
+		  	<div class="panel-heading">Physical Shipment Release</div>
+		  	<div class="panel-body">
+		    	Phy.Ship.Released Date : <input class="input-normal" type="text" data-datepicker="{theme: 'flat',dateformat: 'YYYY-MM-DD'}" data-ng-model="FILTER_DATA.phy_ship_released_date"/>
+		    	<br><br>
+		    	<button ng-if="FILTER_DATA.phy_ship_released_date != undefined" class="btn btn-success btn-xs" ng-click="confirmRelease()">Confirm Release</button>
+		  	</div>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="panel panel-default">
+		  	<div class="panel-heading">Status Color/Status/Comment/Remarks</div>
+		  	<div class="panel-body">
+		    	Color : <select ng-options="opt as opt for opt in ['RED','ORANGE','GREEN','GRAY','BLACK','PURPLE','BLUE']" ng-model="FILTER_DATA.color"></select>
+		    	&nbsp;
+		    	<span style="background-color: {{FILTER_DATA.color}};width: 10px;">&nbsp;&nbsp;</span>
+		    	<br>
+		    	<br>
+		    	Status: <input ng-model="FILTER_DATA.status" type="text" name=""><br><br>
+		    	Comment: <textarea ng-model="FILTER_DATA.comment"></textarea><br><br>
+
+		    	Remarks : <textarea ng-model="FILTER_DATA.remarks"></textarea><br>
+		  	</div>
+		  	<br><br>
+		    	&nbsp;&nbsp;&nbsp;<button ng-click="updateComments()" class="btn btn-success btn-xs">Update Comment</button>
+		    	<br><br>
+		</div>
+	</div> 
+
+
+</div>
+
+
+
+<!--MODALS-->
+<!-- search modal -->
+    <div class="modal fade" id="searchBrokerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+          <div class="modal-body">
+                <div class="row main">
+                    <div class="col-md-12" style="padding:30px;">
+                        <h3 class="g-tpl-title">Enter Broker Name</h3><br>
+                        <input type="text" ng-model="FILTER_DATA.broker_search_key" class="form-control input-normal" ng-change="search_broker()" placeholder="Enter Broker Name Here" name="">
+                    </div>
+                </div>
+                <div style="overflow-y: scroll;max-height: 500px;">
+                	<table class="table">
+                		<tr style="background-color: gray;color: white;">
+                			<td>Name</td>
+                			<td>Action</td>
+                		</tr>
+                		<tr ng-repeat="data in BROKERS_LIST">
+                			<td>{{data.name}}</td>
+                			<td><button ng-click="pickBroker(data)" class="btn btn-default btn-xs">Pick Broker</button></td>
+                		</tr>
+                	</table>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default g-tpl-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /search modal -->
