@@ -230,15 +230,12 @@ APP.factory("GServices", ["$rootScope", "$http", "APP_LOGGING", "BASE_SERVER_URL
 
 
 
-        OBJ.get_summary = function() {  return $http.get(BASE_SERVER_URL + '/api-cl-tmn/assignment_summary', { cache: false });  };
-       
-        OBJ.filter_assignments = function(data) { return $http.post(BASE_SERVER_URL + '/api-cl-tmn/filter_assignments',data);  };
-        OBJ.get_vendors = function() {  return $http.get(BASE_SERVER_URL + '/api-cl-tmn/vendors', { cache: true });  };
-       
+        
+        OBJ.filter_assignments = function(data) { return $http.post(BASE_SERVER_URL + '/api-cl-tar/filter_assignments',data);  };
+        OBJ.get_vendors = function() {  return $http.get(BASE_SERVER_URL + '/api-cl-tar/vendors', { cache: true });  };
 
-        OBJ.get_min_awb_info = function(data) { return $http.post(BASE_SERVER_URL + '/api-cl-tmn/min_awb_info',data);  };
-        OBJ.get_workers_cs = function() {  return $http.get(BASE_SERVER_URL + '/api-cl-tmn/get_workers_cs', { cache: true });  };
-        OBJ.set_assignments = function(data) { return $http.post(BASE_SERVER_URL + '/api-cl-tmn/set_assignments',data);  };
+        
+       
         
 
 
@@ -260,7 +257,7 @@ APP.factory("GServices", ["$rootScope", "$http", "APP_LOGGING", "BASE_SERVER_URL
 
 
          //filter awaiting payment list
-        OBJ.filter_awaiting_payment_list = function($sd,$ed) {  return $http.get(BASE_SERVER_URL + '/api-cl-manager/filter_awaiting_payment_list?stmnt_date='+$sd+'&end_date='+$ed, { cache: false });  };
+        OBJ.filter_awaiting_payment_list = function($sd,$ed) {  return $http.get(BASE_SERVER_URL + '/api-cl-manager/filter_awaiting_payment_list?start_date='+$sd+'&end_date='+$ed, { cache: false });  };
         OBJ.update_awaiting_list = function(id,data) { return $http.post(BASE_SERVER_URL + '/api-cl-manager/update_awaiting_list/'+id,data);  };
         
         
@@ -379,27 +376,12 @@ APP.factory("HelperService",[function(){
                 var today = dd+''+mm+''+yyyy;
                 return today;
                 break;
-
             case "yyyymmdd" : 
                 var today = yyyy+'-'+mm+'-'+dd;
                 return today;
                 break;
         }
         
-    };
-
-    OBJ.getWeekDayName = function($xDate,format){
-        if(format == "long"){
-            var mydate = $xDate + "T00:00:00";
-            var weekDayName =  moment(mydate).format('dddd');
-            console.log(weekDayName);
-            return weekDayName;
-        }else{
-            var mydate = $xDate + "T00:00:00";
-            var weekDayName =  moment(mydate).format('ddd');
-            console.log(weekDayName);
-            return weekDayName;
-        }
     };
     OBJ.getRemainedDurationFromNowPeriod = function($xDate){
         var now = moment(new Date());
@@ -417,25 +399,6 @@ APP.factory("HelperService",[function(){
         else if(rem_hrs > 0 ) return rem_hrs + ' hour'+(rem_hrs > 1? 's':'') +' remained.';
         else if(rem_minutes > 0 ) return rem_minutes + ' minute'+(rem_minutes > 1? 's':'') +' remained.';
         else return 0 + ' days remained.';
-    };
-    OBJ.getPastDurationFromNowPeriod = function($xDate){
-        var now = moment(new Date());
-        var a = moment($xDate);//now
-        var b = moment(now);
-        var rem_minutes = b.diff(a, 'minutes');
-        var rem_hrs = b.diff(a, 'hours');
-        var rem_days = b.diff(a, 'days');
-        var rem_weeks = b.diff(a, 'weeks');
-        var rem_months = b.diff(a, 'months');
-        //console.log($xDate + " ==> MINS : " +  rem_minutes);
-        //console.log($xDate + " ==> HRS : " +  rem_hrs);
-
-        if(rem_months > 0 ) return rem_months + ' Month'+(rem_months > 1? 's':'') +' Ago.';
-        else if(rem_weeks > 0 ) return rem_weeks + ' Week'+(rem_weeks > 1? 's':'') +' Ago.';
-        else if(rem_days > 0 ) return rem_days + ' Day'+(rem_days > 1? 's':'') +' Ago.';
-        else if(rem_hrs > 0 ) return rem_hrs + ' Hour'+(rem_hrs > 1? 's':'') +' Ago.';
-        else if(rem_minutes > 0 ) return rem_minutes + ' Minute'+(rem_minutes > 1? 's':'') +' Ago.';
-        else return 0 + ' days Ago.';
     };
     OBJ.getTokenCode = function(length){
         //edit the token allowed characters
@@ -467,7 +430,7 @@ APP.factory("HelperService",[function(){
             return "";
         }
 
-        var string = n.toString(), units, tens, scales, stmnt, end, chunks, chunksLen, chunk, ints, i, word, words, and = 'and';
+        var string = n.toString(), units, tens, scales, start, end, chunks, chunksLen, chunk, ints, i, word, words, and = 'and';
 
         /* Remove spaces and commas */
         string = string.replace(/[, ]/g,"");
@@ -487,11 +450,11 @@ APP.factory("HelperService",[function(){
         scales = [ '', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quatttuor-decillion', 'quindecillion', 'sexdecillion', 'septen-decillion', 'octodecillion', 'novemdecillion', 'vigintillion', 'centillion' ];
         
         /* Split user arguemnt into 3 digit chunks from right to left */
-        stmnt = string.length;
+        start = string.length;
         chunks = [];
-        while( stmnt > 0 ) {
-            end = stmnt;
-            chunks.push( string.slice( ( stmnt = Math.max( 0, stmnt - 3 ) ), end ) );
+        while( start > 0 ) {
+            end = start;
+            chunks.push( string.slice( ( start = Math.max( 0, start - 3 ) ), end ) );
         }
         
         /* Check if function has enough scale words to be able to stringify the user argument */

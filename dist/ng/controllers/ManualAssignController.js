@@ -119,7 +119,7 @@ APP.controller('ManualAssignController', ['$scope','$state','$stateParams','Auth
                 if(response.status == 200 || 201 || 202 || 203 || 204){
                     if(response.data.msg_data != null){
                         $scope.AWB_LIST[$awbIndex]['info'] = "@" + response.data.msg_data.bill_duty_to 
-                        	+ " [ " + response.data.msg_data.awb_no + " ]  "
+                        	+ " [ " + response.data.msg_data.awb_no + " / "+response.data.msg_data.master_awb_no+" ]  "
                             + response.data.msg_data.shipper_name + " ***TO*** " 
                             + response.data.msg_data.consignee_name + ", ("
                             + response.data.msg_data.consignee_city + ") with "
@@ -131,6 +131,11 @@ APP.controller('ManualAssignController', ['$scope','$state','$stateParams','Auth
                         $scope.AWB_LIST[$awbIndex]['shipment_id'] = response.data.msg_data.id;
                         $scope.AWB_LIST[$awbIndex]['customer_id'] = response.data.msg_data.customer_id;
                         $scope.AWB_LIST[$awbIndex]['assigned_cs'] = response.data.msg_data.assigned_cs;
+                        $scope.AWB_LIST[$awbIndex]['held'] = response.data.msg_data.held_at_customs !=null? 1:0;
+                        $scope.AWB_LIST[$awbIndex]['master_awb_no'] = response.data.msg_data.master_awb_no;
+
+                        $scope.AWB_LIST[$awbIndex]['pcs'] = response.data.msg_data.pcs;
+                        $scope.AWB_LIST[$awbIndex]['pkg_counts'] = response.data.msg_data.pkg_counts;
 
                         //set customer set field
                         var customer_id = $scope.AWB_LIST[$awbIndex]['customer_id'];

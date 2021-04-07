@@ -60,8 +60,19 @@
             		<span ng-if="data.assigned_cs == -1" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;color:red;border:2px solid red;">CS-NOT-ASSIGNED</span></div>
             	</td>
             	<td>
-            		<span ng-if="data.held_at_customs != null" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;border:2px solid green;color:green">HELD</span>
-            		<span ng-if="data.held_at_customs == null" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;color:red;border:2px solid red;">NOT-HELD</span></div>
+            		<span ng-if="data.held == 1" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;border:2px solid green;color:green">HELD</span>
+            		<span ng-if="data.held != 1" style="font-size:0.7em;background-color: white;padding:3px;border-radius: 3px;color:red;border:2px solid red;">NOT-HELD</span></div>
+            		{{data.held_at_customs}}
+            	</td>
+            	<td>
+            		<div>
+            			<div style="width: 60px;"><span ng-if="(data.awb_no == data.master_awb_no) || (data.master_awb_no == null) || data.master_awb_no == ''" style="background-color: blue;color:yellow;padding: 5px;">
+                            M
+                        </span>
+                        <span ng-if="(data.master_awb_no != null) && (data.master_awb_no != '')" style="background-color:purple;font-weight: bold;color: yellow;padding: 5px;">
+                            P
+                        </span></div>
+            		</div>
             	</td>
 
                 <td>
